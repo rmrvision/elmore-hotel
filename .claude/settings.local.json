@@ -31,7 +31,20 @@
       "Bash(git branch *)",
       "Bash(git add *)",
       "Bash(git rm *)",
-      "Bash(git commit -m 'El More — отель: сайт + админка *)"
+      "Bash(git commit -m 'El More — отель: сайт + админка *)",
+      "Bash(gh repo *)",
+      "Bash(curl -sL \"https://api.github.com/repos/timeweb-cloud/s3-examples/contents/\")",
+      "Bash(python3 -c \"import sys,json; [print\\(f['name'], '-', f['type']\\) for f in json.load\\(sys.stdin\\)]\")",
+      "Bash(curl -sL \"https://api.github.com/repos/timeweb-cloud/s3-examples/contents/nodejs\")",
+      "Bash(python3 -c \"import sys,json; [print\\(f['name']\\) for f in json.load\\(sys.stdin\\)]\")",
+      "Bash(curl -sL https://raw.githubusercontent.com/timeweb-cloud/s3-examples/master/nodejs/index.js)",
+      "Bash(curl -sL https://raw.githubusercontent.com/timeweb-cloud/s3-examples/master/nodejs/package.json)",
+      "Bash(curl -sL \"https://api.github.com/repos/timeweb-cloud/s3-examples/contents/nodejs/src\")",
+      "Bash(curl -sL https://raw.githubusercontent.com/timeweb-cloud/s3-examples/master/nodejs/src/put-object.js)",
+      "Bash(curl -sL https://raw.githubusercontent.com/timeweb-cloud/s3-examples/master/nodejs/src/get-object.js)",
+      "Bash(curl -sL https://raw.githubusercontent.com/timeweb-cloud/s3-examples/master/nodejs/src/sample.js)",
+      "Bash(git commit -m 'feat: интеграция с Timeweb S3 *)",
+      "Bash(git push *)"
     ]
   }
 }
