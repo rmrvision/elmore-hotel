@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/site.css?v=5" />
+<link rel="stylesheet" href="/assets/site.css?v=6" />
 <style>
   .booking-page{min-height:100vh;background:var(--bone);}
   .booking-hero{
@@ -76,7 +76,36 @@
     <a href="/#contact">Контакты</a>
   </div>
   <a href="/" class="nav-cta">← На главную</a>
+  <button class="nav-burger" id="navBurger" aria-label="Меню" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<aside class="nav-drawer" id="navDrawer" aria-hidden="true">
+  <div class="nav-drawer-inner">
+    <div class="nav-drawer-eyebrow">— Navigation</div>
+    <nav class="nav-drawer-links">
+      <a href="/#philosophy" data-close-drawer style="--i:0"><span class="num">01</span><span class="lbl">Философия</span></a>
+      <a href="/#rooms" data-close-drawer style="--i:1"><span class="num">02</span><span class="lbl">Номера</span></a>
+      <a href="/#amenities" data-close-drawer style="--i:2"><span class="num">03</span><span class="lbl">Удобства</span></a>
+      <a href="/#contact" data-close-drawer style="--i:3"><span class="num">04</span><span class="lbl">Контакты</span></a>
+    </nav>
+    <div class="nav-drawer-foot">
+      <a href="/" class="nav-drawer-cta" data-close-drawer>← На главную</a>
+    </div>
+  </div>
+</aside>
+
+<script>
+  (function(){
+    var burger=document.getElementById('navBurger'),drawer=document.getElementById('navDrawer');
+    if(!burger||!drawer)return;
+    function setOpen(o){drawer.classList.toggle('open',o);burger.classList.toggle('active',o);burger.setAttribute('aria-expanded',o?'true':'false');drawer.setAttribute('aria-hidden',o?'false':'true');document.body.style.overflow=o?'hidden':'';}
+    burger.addEventListener('click',function(){setOpen(!drawer.classList.contains('open'));});
+    drawer.querySelectorAll('[data-close-drawer]').forEach(function(el){el.addEventListener('click',function(){setOpen(false);});});
+    window.addEventListener('keydown',function(e){if(e.key==='Escape')setOpen(false);});
+  })();
+</script>
 
 <header class="booking-hero">
   <a href="/" class="booking-back">← Назад</a>

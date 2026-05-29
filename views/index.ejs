@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Manrope:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/site.css?v=5" />
+<link rel="stylesheet" href="/assets/site.css?v=6" />
 </head>
 <body>
 
@@ -37,7 +37,28 @@
     <% }) %>
   </div>
   <a href="#reserve" class="nav-cta"><%= content.site.navCta %></a>
+  <button class="nav-burger" id="navBurger" aria-label="Меню" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- mobile drawer -->
+<aside class="nav-drawer" id="navDrawer" aria-hidden="true">
+  <div class="nav-drawer-inner">
+    <div class="nav-drawer-eyebrow">— Navigation</div>
+    <nav class="nav-drawer-links">
+      <% content.site.navLinks.forEach((l, i) => { %>
+        <a href="<%= l.href %>" data-close-drawer style="--i:<%= i %>"><span class="num"><%= String(i+1).padStart(2,'0') %></span><span class="lbl"><%= l.label %></span></a>
+      <% }) %>
+    </nav>
+    <div class="nav-drawer-foot">
+      <a href="#reserve" class="nav-drawer-cta" data-close-drawer><%= content.site.navCta %></a>
+      <% if (content.contact && content.contact.phone) { %>
+        <a class="nav-drawer-phone" href="tel:<%= content.contact.phone.replace(/\s|\+/g,'') %>"><%= content.contact.phone %></a>
+      <% } %>
+    </div>
+  </div>
+</aside>
 
 <!-- hero -->
 <section class="hero">
@@ -310,6 +331,22 @@
   window.addEventListener('load', () => setTimeout(hidePreloader, 200));
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+
+  // ─── мобильное меню ───
+  const burger = document.getElementById('navBurger');
+  const drawer = document.getElementById('navDrawer');
+  if (burger && drawer) {
+    const setOpen = (open) => {
+      drawer.classList.toggle('open', open);
+      burger.classList.toggle('active', open);
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+    burger.addEventListener('click', () => setOpen(!drawer.classList.contains('open')));
+    drawer.querySelectorAll('[data-close-drawer]').forEach(el => el.addEventListener('click', () => setOpen(false)));
+    window.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+  }
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
