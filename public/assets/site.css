@@ -1094,9 +1094,12 @@ footer{
 }
 
 /* ─────────── desktop downscale (визуальное уменьшение без изменения дизайна) ─────────── */
-@media (min-width: 1200px){
+@media (min-width: 1024px){
   body{ zoom: 0.85; }
 }
-@media (min-width: 1600px){
+@media (min-width: 1440px){
   body{ zoom: 0.8; }
+}
+@media (min-width: 1800px){
+  body{ zoom: 0.75; }
 }
