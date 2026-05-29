@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(touch public/uploads/.gitkeep)",
+      "Bash(npm install *)",
+      "Bash(node -e \"require\\('./server.js'\\)\")",
+      "Bash(curl -s -o /dev/null -w \"site=%{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"login=%{http_code}\\\\n\" http://localhost:3000/admin/login)",
+      "Bash(curl -s -o /dev/null -w \"admin\\(no-auth\\)=%{http_code}\\\\n\" -L http://localhost:3000/admin --max-redirs 0)",
+      "Bash(pkill -f \"node -e require\")",
+      "Bash(lsof -ti:3000)",
+      "Bash(ps -p 33455 -o command=)",
+      "WebSearch",
+      "WebFetch(domain:timeweb.cloud)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(curl -s https://api.github.com/repos/timeweb-cloud/app-example-express/contents/package.json)",
+      "Bash(python3 -c \"import sys,json,base64; d=json.load\\(sys.stdin\\); print\\(base64.b64decode\\(d['content']\\).decode\\(\\)\\)\")",
+      "Bash(curl -s https://api.github.com/repos/timeweb-cloud/app-example-express/contents/index.js)",
+      "Bash(curl -sL https://raw.githubusercontent.com/timeweb-cloud/app-example-express/master/package.json)",
+      "Bash(curl -sL https://raw.githubusercontent.com/timeweb-cloud/app-example-express/master/index.js)",
+      "Bash(gh auth *)",
+      "Bash(git --version)",
+      "Read(//opt/homebrew/bin/**)",
+      "Bash(brew list *)",
+      "Bash(brew install *)",
+      "Bash(gh --version)",
+      "Bash(git config *)",
+      "Bash(git init *)",
+      "Bash(git checkout *)",
+      "Bash(git branch *)",
+      "Bash(git add *)",
+      "Bash(git rm *)",
+      "Bash(git commit -m 'El More — отель: сайт + админка *)"
+    ]
+  }
+}

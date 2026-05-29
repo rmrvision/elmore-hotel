@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>El More — Админка</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/admin/static/admin.css" />
+</head>
+<body class="dash-body">
+  <!-- aside -->
+  <aside class="aside">
+    <div class="aside-brand">
+      <div class="brand-mark"></div>
+      <div>
+        <div class="brand-name">El<i>&nbsp;More</i></div>
+        <div class="brand-sub">Panneau d'administration</div>
+      </div>
+    </div>
+
+    <nav class="aside-nav" id="asideNav">
+      <a class="aside-link" data-section="hero"><span class="num">01</span><span class="lbl">Hero</span></a>
+      <a class="aside-link" data-section="philosophy"><span class="num">02</span><span class="lbl">Философия</span></a>
+      <a class="aside-link" data-section="rooms"><span class="num">03</span><span class="lbl">Номера</span></a>
+      <a class="aside-link" data-section="gallery"><span class="num">04</span><span class="lbl">Галерея</span></a>
+      <a class="aside-link" data-section="amenities"><span class="num">05</span><span class="lbl">Удобства</span></a>
+      <a class="aside-link" data-section="reserve"><span class="num">06</span><span class="lbl">Бронирование</span></a>
+      <a class="aside-link" data-section="contact"><span class="num">07</span><span class="lbl">Контакты</span></a>
+      <a class="aside-link" data-section="footer"><span class="num">08</span><span class="lbl">Подвал</span></a>
+      <a class="aside-link" data-section="site"><span class="num">09</span><span class="lbl">Шапка / навигация</span></a>
+      <a class="aside-link" data-section="media"><span class="num">10</span><span class="lbl">Медиатека</span></a>
+    </nav>
+
+    <div class="aside-foot">
+      <a href="/" target="_blank" class="aside-link out"><span class="lbl">↗ Открыть сайт</span></a>
+      <form action="/admin/logout" method="POST"><button class="aside-link out" type="submit"><span class="lbl">Выйти</span></button></form>
+    </div>
+  </aside>
+
+  <!-- main -->
+  <main class="main">
+    <header class="top-bar">
+      <div class="crumbs">
+        <span>Админка</span><span class="sep">/</span><span id="crumbCurrent">Hero</span>
+      </div>
+      <div class="top-actions">
+        <span class="save-state" id="saveState">— Изменений нет</span>
+        <button class="btn ghost" id="resetBtn">Откатить</button>
+        <button class="btn primary" id="saveBtn"><span class="dot"></span>Сохранить</button>
+      </div>
+    </header>
+
+    <div class="panel" id="panel">
+      <!-- динамически -->
+    </div>
+  </main>
+
+  <!-- toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- media picker modal -->
+  <div class="modal" id="mediaModal">
+    <div class="modal-bg" data-close="1"></div>
+    <div class="modal-body">
+      <header>
+        <h3>Выбор изображения</h3>
+        <button class="modal-close" data-close="1">×</button>
+      </header>
+      <div class="media-actions">
+        <label class="btn primary upload-btn">
+          <span class="dot"></span>Загрузить
+          <input type="file" id="uploadInput" accept="image/*" hidden />
+        </label>
+        <span class="hint">или вставьте URL ниже</span>
+        <input type="text" id="urlInput" placeholder="https://..." />
+        <button class="btn ghost" id="useUrlBtn">Использовать URL</button>
+      </div>
+      <div class="media-grid" id="mediaGrid"></div>
+    </div>
+  </div>
+
+  <!-- начальные данные -->
+  <script id="initialContent" type="application/json"><%- JSON.stringify(content) %></script>
+  <script src="/admin/static/admin.js"></script>
+</body>
+</html>

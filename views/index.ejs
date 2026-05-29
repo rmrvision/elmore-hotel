@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title><%= content.site.brand %> — Hôtel & Résidences</title>
+<meta name="description" content="<%= content.site.brand %> — отель премиальной категории. Три коллекции номеров." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Manrope:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css" />
+</head>
+<body>
+
+<!-- preloader -->
+<div id="preloader">
+  <div class="pl-mark" aria-label="<%= content.site.brand %>">
+    <% [...content.site.brand].forEach(ch => { %><span><%= ch === ' ' ? ' ' : ch %></span><% }) %>
+  </div>
+  <div class="pl-line"></div>
+  <div class="pl-sub">Hôtel · Maison de Repos · Est. MMXVIII</div>
+</div>
+
+<!-- navigation -->
+<nav class="top" id="nav">
+  <a href="#" class="brand"><span class="brand-mark"></span><%= content.site.brand.split(' ')[0] %><i>&nbsp;<%= content.site.brandItalic %></i></a>
+  <div class="nav-links">
+    <% content.site.navLinks.forEach(l => { %>
+      <a href="<%= l.href %>"><%= l.label %></a>
+    <% }) %>
+  </div>
+  <a href="#reserve" class="nav-cta"><%= content.site.navCta %></a>
+</nav>
+
+<!-- hero -->
+<section class="hero">
+  <div class="hero-meta">
+    <span><span class="dot"></span><%= content.hero.metaLeft %></span>
+    <span><%= content.hero.metaCenter %></span>
+    <span><%= content.hero.metaRight %></span>
+  </div>
+  <div class="hero-left">
+    <h1 class="hero-title">
+      <span class="l1"><span class="inner"><%= content.hero.titleLine1 %></span></span>
+      <span class="l2"><span class="inner italic"><%= content.hero.titleLine2 %></span></span>
+    </h1>
+    <div class="hero-tag">
+      <div class="num"><%- content.hero.introLabel.replace(/\n/g,'<br/>') %></div>
+      <div class="text"><%= content.hero.introText %></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-image">
+      <img src="<%= content.hero.image %>" alt="<%= content.site.brand %> — интерьер" />
+    </div>
+    <div class="hero-image-cap">
+      <span><%= content.hero.imageCaptionLeft %></span>
+      <span><%= content.hero.imageCaptionRight %></span>
+    </div>
+  </div>
+  <div class="scroll-ind"><span>Scroll</span><span class="line"></span></div>
+</section>
+
+<!-- philosophy -->
+<section id="philosophy" class="philosophy">
+  <div class="philosophy-left reveal">
+    <div class="eyebrow"><%= content.philosophy.eyebrow %></div>
+    <p class="philosophy-quote">
+      <%= content.philosophy.quotePre %> <span class="accent"><%= content.philosophy.quoteAccent %></span> <%= content.philosophy.quotePost %>
+    </p>
+  </div>
+  <div class="philosophy-right reveal reveal-d2">
+    <% content.philosophy.paragraphs.forEach(p => { %><p><%= p %></p><% }) %>
+    <div class="philosophy-stats">
+      <% content.philosophy.stats.forEach(s => { %>
+        <div class="stat"><div class="n"><%= s.n %></div><div class="l"><%= s.l %></div></div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<!-- rooms -->
+<section id="rooms" class="rooms">
+  <div class="rooms-head">
+    <div class="reveal">
+      <div class="eyebrow"><%= content.rooms.eyebrow %></div>
+      <h2 class="section-title"><%= content.rooms.titleLine1 %><br/><em><%= content.rooms.titleLine2 %></em></h2>
+    </div>
+    <div class="desc reveal reveal-d2"><%= content.rooms.description %></div>
+  </div>
+
+  <% content.rooms.items.forEach((r, i) => { %>
+    <article class="room reveal">
+      <div class="room-num"><%= r.num %><br/>—</div>
+      <div class="room-content">
+        <h3><%= r.title %><% if (r.titleItalic) { %> <em><%= r.titleItalic %></em><% } %></h3>
+        <div class="room-cat"><%= r.category %></div>
+        <p class="room-desc"><%= r.description %></p>
+        <div class="room-specs">
+          <% r.specs.forEach(sp => { %>
+            <div class="spec"><span class="lbl"><%= sp.lbl %></span><span class="val"><%= sp.val %></span></div>
+          <% }) %>
+        </div>
+        <a href="#reserve" class="room-cta">
+          Забронировать
+          <svg viewBox="0 0 14 8" fill="none"><path d="M0 4h13M9 1l4 3-4 3" stroke="currentColor" stroke-width="1"/></svg>
+        </a>
+      </div>
+      <div class="room-img">
+        <span class="room-img-tag"><%= r.imageTag %></span>
+        <img src="<%= r.image %>" alt="<%= r.title %>" />
+      </div>
+    </article>
+  <% }) %>
+</section>
+
+<!-- gallery -->
+<section class="gallery" id="gallery">
+  <div class="gallery-head">
+    <div class="reveal">
+      <div class="eyebrow"><%= content.gallery.eyebrow %></div>
+      <h2><%= content.gallery.title %> <em><%= content.gallery.titleItalic %></em></h2>
+    </div>
+    <p class="reveal reveal-d2"><%= content.gallery.description %></p>
+  </div>
+  <div class="mosaic">
+    <% let imgIdx = 0; content.gallery.tiles.forEach((tile, i) => { %>
+      <% if (tile.type === 'note') { %>
+        <figure class="tile note reveal reveal-d2">
+          <span class="num"><%= tile.num %></span>
+          <p class="quote"><%= tile.quote %></p>
+          <span class="sign"><%= tile.sign %></span>
+        </figure>
+      <% } else { imgIdx++; %>
+        <figure class="tile t<%= imgIdx %> reveal">
+          <img src="<%= tile.image %>" alt="<%= tile.cap %>" />
+          <figcaption class="tile-cap">
+            <span><%= tile.cap %></span>
+            <span class="tile-num"><%= tile.num %></span>
+          </figcaption>
+        </figure>
+      <% } %>
+    <% }) %>
+  </div>
+  <div class="gallery-foot">
+    <span><%= content.gallery.footText %></span>
+    <a href="#reserve"><%= content.gallery.footCta %>
+      <svg width="16" height="9" viewBox="0 0 14 8" fill="none"><path d="M0 4h13M9 1l4 3-4 3" stroke="currentColor" stroke-width="1"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- amenities -->
+<section id="amenities" class="amenities">
+  <div class="amen-head">
+    <div class="reveal">
+      <div class="eyebrow"><%= content.amenities.eyebrow %></div>
+      <h2 class="section-title"><%= content.amenities.title %> <em><%= content.amenities.titleItalic %></em></h2>
+    </div>
+    <p class="reveal reveal-d2"><%= content.amenities.description %></p>
+  </div>
+  <div class="amen-grid">
+    <%
+      const icons = [
+        '<svg viewBox="0 0 24 24"><path d="M3 12c0-5 4-9 9-9s9 4 9 9-4 9-9 9-9-4-9-9zm9-5v5l3 2"/></svg>',
+        '<svg viewBox="0 0 24 24"><path d="M2 12h20M6 8h12M8 4h8M6 16h12M8 20h8"/></svg>',
+        '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>',
+        '<svg viewBox="0 0 24 24"><path d="M4 20V8l8-5 8 5v12M9 20v-6h6v6"/></svg>',
+        '<svg viewBox="0 0 24 24"><path d="M5 12c2-4 5-6 7-6s5 2 7 6c-2 4-5 6-7 6s-5-2-7-6z"/><circle cx="12" cy="12" r="2"/></svg>',
+        '<svg viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12M9 21V12h6v9"/></svg>',
+        '<svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/></svg>',
+        '<svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 12h16M12 4v16"/></svg>'
+      ];
+    %>
+    <% content.amenities.items.forEach((a, i) => { %>
+      <div class="amen reveal">
+        <span class="amen-num"><%= a.num %></span>
+        <div class="amen-ico"><%- icons[i % icons.length] %></div>
+        <h4><%= a.title %></h4>
+        <p><%= a.text %></p>
+      </div>
+    <% }) %>
+  </div>
+</section>
+
+<!-- reservation -->
+<section id="reserve" class="reserve">
+  <div class="reserve-head">
+    <div class="eyebrow reveal"><%= content.reserve.eyebrow %></div>
+    <h2 class="reserve-title reveal reveal-d2"><%= content.reserve.titleLine1 %><br/><em><%= content.reserve.titleLine2 %></em></h2>
+    <p class="reveal reveal-d3"><%= content.reserve.description %></p>
+  </div>
+  <form class="reserve-form reveal reveal-d4" onsubmit="event.preventDefault(); alert('Спасибо! Мы свяжемся с вами в течение часа.');">
+    <div class="reserve-field"><label>Заезд</label><input type="date" required /></div>
+    <div class="reserve-field"><label>Выезд</label><input type="date" required /></div>
+    <div class="reserve-field"><label>Гости</label>
+      <select><option>1 гость</option><option>2 гостя</option><option>3 гостя</option><option>4 гостя</option></select>
+    </div>
+    <div class="reserve-field"><label>Категория</label>
+      <select><% content.reserve.categories.forEach(c => { %><option><%= c %></option><% }) %></select>
+    </div>
+    <button type="submit" class="reserve-btn">
+      <span class="dot"></span><%= content.reserve.buttonLabel %><span class="dot"></span>
+    </button>
+  </form>
+</section>
+
+<!-- contact -->
+<section id="contact" class="contact">
+  <div class="contact-block reveal">
+    <h4><%= content.contact.addressLabel %></h4>
+    <p><%- content.contact.address.replace(/\n/g,'<br/>') %></p>
+    <div class="small"><%= content.contact.addressNote %></div>
+  </div>
+  <div class="contact-block reveal reveal-d2">
+    <h4><%= content.contact.linkLabel %></h4>
+    <a href="tel:<%= content.contact.phone.replace(/\s|\+/g,'') %>"><%= content.contact.phone %></a>
+    <a href="mailto:<%= content.contact.email %>"><%= content.contact.email %></a>
+    <div class="small"><%- content.contact.contactNote.replace(/\n/g,'<br/>') %></div>
+  </div>
+</section>
+
+<!-- footer -->
+<footer>
+  <div class="foot-top">
+    <div class="foot-brand">
+      <%= content.site.brand.split(' ')[0] %> <i><%= content.site.brandItalic %></i>
+      <small><%= content.footer.tagline %></small>
+    </div>
+    <% content.footer.columns.forEach(col => { %>
+      <div class="foot-col">
+        <h5><%= col.title %></h5>
+        <% col.links.forEach(l => { %><a href="<%= l.href %>"><%= l.label %></a><% }) %>
+        <% if (col.extra) { %><p><%- col.extra.replace(/\n/g,'<br/>') %></p><% } %>
+      </div>
+    <% }) %>
+  </div>
+  <div class="foot-bot">
+    <span><%= content.footer.copyright %></span>
+    <span><a href="#">Политика конфиденциальности</a> · <a href="#">Оферта</a></span>
+  </div>
+</footer>
+
+<script>
+  const hidePreloader = () => { const p=document.getElementById('preloader'); if(p) p.classList.add('done'); };
+  setTimeout(hidePreloader, 2400);
+  window.addEventListener('load', () => setTimeout(hidePreloader, 200));
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

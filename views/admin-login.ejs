@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>El More — Вход в админку</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Manrope:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/admin/static/admin.css" />
+</head>
+<body class="login-body">
+  <div class="login-grain"></div>
+  <div class="login-wrap">
+    <div class="login-left">
+      <div class="login-mark">El<i>&nbsp;More</i></div>
+      <div class="login-sub">Hôtel · Maison de Repos</div>
+      <div class="login-cap">— Panneau d'administration · accès réservé</div>
+    </div>
+    <form class="login-form" method="POST" action="/admin/login">
+      <div class="login-eyebrow">— Connexion · MMXXVI</div>
+      <h1 class="login-title">Добро<br/><em>пожаловать.</em></h1>
+      <p class="login-desc">Войдите, чтобы редактировать содержимое сайта El More.</p>
+
+      <label class="login-field">
+        <span>Пароль</span>
+        <input type="password" name="password" required autofocus placeholder="••••••••" />
+      </label>
+
+      <% if (error) { %>
+        <div class="login-err"><span class="dot"></span><%= error %></div>
+      <% } %>
+
+      <button type="submit" class="login-btn">
+        <span class="dot"></span>Войти<span class="dot"></span>
+      </button>
+
+      <a href="/" class="login-back">← Вернуться на сайт</a>
+    </form>
+  </div>
+</body>
+</html>

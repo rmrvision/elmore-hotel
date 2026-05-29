@@ -1,0 +1,174 @@
+{
+  "site": {
+    "brand": "El More",
+    "brandItalic": "More",
+    "navLinks": [
+      { "label": "Философия", "href": "#philosophy" },
+      { "label": "Номера", "href": "#rooms" },
+      { "label": "Удобства", "href": "#amenities" },
+      { "label": "Контакты", "href": "#contact" }
+    ],
+    "navCta": "Забронировать"
+  },
+  "hero": {
+    "metaLeft": "43.2°N · 76.8°E",
+    "metaCenter": "Chapter I — Le Sommeil",
+    "metaRight": "MMXXVI · No. 07",
+    "titleLine1": "El",
+    "titleLine2": "More",
+    "introLabel": "— 01\nIntro",
+    "introText": "Камерный отель в трёх главах, где каждое утро начинается с белья из египетского хлопка, а каждый вечер — с тишины, в которой слышно собственное дыхание.",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=80",
+    "imageCaptionLeft": "Pl. I — Salon Principal",
+    "imageCaptionRight": "↗ Voir la suite"
+  },
+  "philosophy": {
+    "eyebrow": "— 02 · Философия",
+    "quotePre": "Дом, который помнит вас",
+    "quoteAccent": "по имени",
+    "quotePost": "— и забывает о времени, как только вы переступили порог.",
+    "paragraphs": [
+      "El More — это не гостиница, а собрание комнат, тщательно сложенных вокруг одной идеи: дать гостю замедлиться. Архитектура матовых поверхностей, тёплое латунное освещение и постельное бельё, которое стирают вручную.",
+      "Три категории номеров — три разных способа провести вечер. От компактного и продуманного «Эконома» до семейного «Люкса» с двумя комнатами, где можно растворить уикенд без остатка."
+    ],
+    "stats": [
+      { "n": "24", "l": "номера" },
+      { "n": "03", "l": "категории" },
+      { "n": "98%", "l": "возвратность" }
+    ]
+  },
+  "rooms": {
+    "eyebrow": "— 03 · Les Chambres",
+    "titleLine1": "Три главы",
+    "titleLine2": "одной тишины",
+    "description": "Каждый номер — отдельная история. Никаких лишних деталей, только тщательно подобранная мебель, плотные шторы и свет, который умеет молчать.",
+    "items": [
+      {
+        "num": "N° 01",
+        "title": "Эконом",
+        "titleItalic": "",
+        "category": "Chambre Économe · Цоколь",
+        "description": "Привлекательный и бюджетный вариант проживания с новой и комфортной мебелью. В номере имеется маленькое окно, а ванная комната со всеми удобствами находится на этаже, вне номера. Идеально для тех, кто ищет доступное проживание без ущерба для уютной атмосферы. Номер находится на цокольном этаже.",
+        "specs": [
+          { "lbl": "Гости", "val": "2 чел." },
+          { "lbl": "Комнаты", "val": "1" },
+          { "lbl": "Площадь", "val": "17–20 м²" },
+          { "lbl": "Этаж", "val": "Цокольный" }
+        ],
+        "image": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=900&q=80",
+        "imageTag": "Pl. 01 — Économe"
+      },
+      {
+        "num": "N° 02",
+        "title": "Стандарт",
+        "titleItalic": "Плюс",
+        "category": "Chambre Supérieure · 2-й этаж",
+        "description": "Номер предлагает уютное убранство, идеальное для тех, кто ценит функциональность и приятную атмосферу. Здесь вы найдёте всё необходимое для приятного проживания — удобную кровать, дополнительное спальное место в виде кресла-раскладушки (в некоторых номерах кровать-раскладушка), удобное рабочее пространство и стильно оформленную ванную комнату.",
+        "specs": [
+          { "lbl": "Гости", "val": "2 + 1" },
+          { "lbl": "Комнаты", "val": "1" },
+          { "lbl": "Площадь", "val": "22–27 м²" },
+          { "lbl": "Доп. место", "val": "Кресло" }
+        ],
+        "image": "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80",
+        "imageTag": "Pl. 02 — Supérieure"
+      },
+      {
+        "num": "N° 03",
+        "title": "Люкс",
+        "titleItalic": "Семейный",
+        "category": "Suite Familiale · 3-й этаж",
+        "description": "Номер «Люкс семейный» предлагает комфорт и удобство с двумя отдельными комнатами семье до 4 человек. Здесь вы найдёте всё необходимое для комфортного проживания, включая удобную кровать, раскладной диван для детей до 16 лет, просторную ванную комнату и все ванные принадлежности. Вас окружит приятная обстановка и прекрасный дизайн.",
+        "specs": [
+          { "lbl": "Гости", "val": "до 4" },
+          { "lbl": "Комнаты", "val": "2" },
+          { "lbl": "Площадь", "val": "35 м²" },
+          { "lbl": "Дети", "val": "до 16" }
+        ],
+        "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=80",
+        "imageTag": "Pl. 03 — Familiale"
+      }
+    ]
+  },
+  "gallery": {
+    "eyebrow": "— Pl. IV · Atmosphère",
+    "title": "Кадры",
+    "titleItalic": "дома",
+    "description": "Шесть мгновений из жизни El More: утреннее окно, медные краны в ванной, плотный лён на кровати и свет, который тщательно подбирали полгода.",
+    "tiles": [
+      { "type": "image", "image": "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1000&q=80", "cap": "Pl. I — Le Salon", "num": "i." },
+      { "type": "image", "image": "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=900&q=80", "cap": "Pl. II — Bain", "num": "ii." },
+      { "type": "image", "image": "https://images.unsplash.com/photo-1551776235-dde6d4829808?auto=format&fit=crop&w=800&q=80", "cap": "Pl. III — Matin", "num": "iii." },
+      { "type": "note", "num": "— Note du maître d'hôtel", "quote": "«Хороший отель — это не тот, где много, а тот, где ничего не лишнего.»", "sign": "— A. Moreau, fondateur" },
+      { "type": "image", "image": "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=800&q=80", "cap": "Pl. IV — Le Lit", "num": "iv." },
+      { "type": "image", "image": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=900&q=80", "cap": "Pl. V — Le Bureau", "num": "v." },
+      { "type": "image", "image": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=1100&q=80", "cap": "Pl. VI — Le Soir", "num": "vi." }
+    ],
+    "footText": "— Photographies par F. Lambert · MMXXVI",
+    "footCta": "Забронировать визит"
+  },
+  "amenities": {
+    "eyebrow": "— 04 · Au Quotidien",
+    "title": "Маленькие",
+    "titleItalic": "привилегии",
+    "description": "Не «всё включено», а «всё продумано». Восемь деталей, которые делают пребывание в El More узнаваемым и тёплым.",
+    "items": [
+      { "num": "01", "title": "Завтрак до полудня", "text": "Подают в номер или в малом салоне. Кофе варят на медной турке." },
+      { "num": "02", "title": "Хлопок 300 нитей", "text": "Постельное бельё из египетского сатина, стирка собственной прачечной." },
+      { "num": "03", "title": "Wi-Fi во всём здании", "text": "Оптоволокно 1 Гбит/с, без паролей у стойки регистрации." },
+      { "num": "04", "title": "Ранний заезд", "text": "По запросу — без доплаты, если номер свободен с ночи." },
+      { "num": "05", "title": "Тишина после 22:00", "text": "Внутренний регламент, который мы не нарушаем ни ради кого." },
+      { "num": "06", "title": "Парковка во дворе", "text": "Огороженная территория с видеонаблюдением, без доплаты." },
+      { "num": "07", "title": "Косметика Le Labo", "text": "Парфюм Santal 33 в шампуне и геле — никакой имитации." },
+      { "num": "08", "title": "Консьерж 24/7", "text": "Бронируем рестораны, такси, билеты в театр — одним сообщением." }
+    ]
+  },
+  "reserve": {
+    "eyebrow": "— 05 · Réservation",
+    "titleLine1": "Откройте дверь",
+    "titleLine2": "в El More",
+    "description": "Заполните форму ниже — в течение часа администратор подтвердит свободные даты и пришлёт письмо с реквизитами. Без предоплаты.",
+    "categories": ["Эконом", "Стандарт Плюс", "Люкс Семейный"],
+    "buttonLabel": "Отправить запрос"
+  },
+  "contact": {
+    "addressLabel": "— Адрес",
+    "address": "ул. Тенистая, 14\nАлматы, 050010",
+    "addressNote": "Открыто круглосуточно · Парковка во дворе",
+    "linkLabel": "— Связь",
+    "phone": "+7 700 123 45 67",
+    "email": "hello@elmore.hotel",
+    "contactNote": "Администратор отвечает в течение часа\nв любое время суток."
+  },
+  "footer": {
+    "tagline": "— Hôtel & Résidences · Est. MMXVIII",
+    "columns": [
+      {
+        "title": "— Навигация",
+        "links": [
+          { "label": "Философия", "href": "#philosophy" },
+          { "label": "Номера", "href": "#rooms" },
+          { "label": "Удобства", "href": "#amenities" },
+          { "label": "Бронирование", "href": "#reserve" }
+        ]
+      },
+      {
+        "title": "— Связь",
+        "links": [
+          { "label": "+7 700 123 45 67", "href": "tel:+77001234567" },
+          { "label": "hello@elmore.hotel", "href": "mailto:hello@elmore.hotel" }
+        ],
+        "extra": "ул. Тенистая, 14\nАлматы"
+      },
+      {
+        "title": "— Социальные сети",
+        "links": [
+          { "label": "Instagram", "href": "#" },
+          { "label": "Telegram", "href": "#" },
+          { "label": "WhatsApp", "href": "#" }
+        ]
+      }
+    ],
+    "copyright": "© MMXXVI · El More · Все права сохранены"
+  }
+}

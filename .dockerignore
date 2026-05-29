@@ -1,0 +1,15 @@
+node_modules
+.env
+.env.*
+backups
+uploads/*
+!uploads/.gitkeep
+data/
+backups/
+.git
+.gitignore
+.DS_Store
+README.md
+DEPLOY.md
+*.log
+index.html
