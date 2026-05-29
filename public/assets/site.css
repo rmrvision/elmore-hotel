@@ -1092,3 +1092,11 @@ footer{
   .foot-brand{font-size:56px;}
   .foot-bot{flex-direction:column;gap:14px;text-align:center;}
 }
+
+/* ─────────── desktop downscale (визуальное уменьшение без изменения дизайна) ─────────── */
+@media (min-width: 1200px){
+  body{ zoom: 0.85; }
+}
+@media (min-width: 1600px){
+  body{ zoom: 0.8; }
+}
