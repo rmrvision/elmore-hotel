@@ -526,34 +526,89 @@ function renderSite() {
 }
 
 function renderTravelline() {
-  // ленивая инициализация на случай старого content.json
-  if (!state.travelline) state.travelline = { contextId: '', lang: 'ru' };
+  if (!state.travelline) state.travelline = { contextId: '', lang: 'ru', searchScript: '', bookingScript: '' };
+  if (state.travelline.searchScript == null)  state.travelline.searchScript = '';
+  if (state.travelline.bookingScript == null) state.travelline.bookingScript = '';
   const tl = state.travelline;
-  const configured = !!tl.contextId;
+  const hasScripts = !!(tl.searchScript || tl.bookingScript);
+  const hasCtx = !!tl.contextId;
+  const connected = hasScripts || hasCtx;
+
   return `
     <p class="panel-desc">
       Подключение модуля онлайн-бронирования <strong>TL: Booking Engine</strong>.
-      Скрипт подгружается с <code>ibe.tlintegration.com</code>, виджет поиска
-      встраивается в секцию «Бронирование» на главной, полная форма — на странице
-      <a href="/booking" target="_blank" style="color:var(--brass);">/booking</a>.
+      Поддержка TravelLine сделает скрипты под наш дизайн и пришлёт их на почту.
+      Вставьте полученные скрипты в поля ниже — этого достаточно.
     </p>
 
     <div class="group">
       <div class="group-head">
-        <div class="group-title"><span class="num">▸</span>Настройки интеграции
-          <span style="font-family:var(--mono);font-size:10px;letter-spacing:0.25em;margin-left:14px;color:${configured ? '#3F7044' : 'var(--brass)'};">
-            ${configured ? '● ПОДКЛЮЧЕНО' : '● НЕ ПОДКЛЮЧЕНО'}
+        <div class="group-title"><span class="num">●</span>Статус подключения
+          <span style="font-family:var(--mono);font-size:10px;letter-spacing:0.25em;margin-left:14px;color:${connected ? '#3F7044' : 'var(--brass)'};">
+            ${connected ? '● ПОДКЛЮЧЕНО' : '● НЕ ПОДКЛЮЧЕНО'}
           </span>
         </div>
       </div>
       <div class="group-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;">
+          <div style="padding:14px 18px;border:1px solid var(--line);">
+            <div style="color:var(--ink-3);">Скрипт поиска</div>
+            <div style="margin-top:6px;color:${tl.searchScript ? '#3F7044' : 'var(--ink-3)'};">${tl.searchScript ? '● вставлен' : '○ не вставлен'}</div>
+          </div>
+          <div style="padding:14px 18px;border:1px solid var(--line);">
+            <div style="color:var(--ink-3);">Скрипт бронирования</div>
+            <div style="margin-top:6px;color:${tl.bookingScript ? '#3F7044' : 'var(--ink-3)'};">${tl.bookingScript ? '● вставлен' : '○ не вставлен'}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-head"><div class="group-title"><span class="num">1</span>Скрипт виджета поиска
+        <span class="lbl-hint" style="font-family:var(--sans);font-size:12px;color:var(--ink-3);text-transform:none;letter-spacing:0;margin-left:14px;">→ показывается на главной в секции «Бронирование»</span>
+      </div></div>
+      <div class="group-body">
+        <div class="field full">
+          <label>Вставьте скрипт от TravelLine целиком <span class="lbl-hint">включая теги &lt;script&gt;&lt;/script&gt;</span></label>
+          <textarea data-path="travelline.searchScript" style="font-family:var(--mono);font-size:12px;min-height:200px;white-space:pre;">${esc(tl.searchScript)}</textarea>
+        </div>
+        <p style="margin-top:10px;font-size:13px;color:var(--ink-3);line-height:1.6;">
+          В письме от поддержки этот скрипт будет помечен примерно так:
+          «Скрипт для формы поиска» или «search-form».
+          Внутри он должен содержать <code>'embed', 'search-form'</code>.
+        </p>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-head"><div class="group-title"><span class="num">2</span>Скрипт формы бронирования
+        <span class="lbl-hint" style="font-family:var(--sans);font-size:12px;color:var(--ink-3);text-transform:none;letter-spacing:0;margin-left:14px;">→ показывается на странице /booking</span>
+      </div></div>
+      <div class="group-body">
+        <div class="field full">
+          <label>Вставьте скрипт от TravelLine целиком <span class="lbl-hint">включая теги &lt;script&gt;&lt;/script&gt;</span></label>
+          <textarea data-path="travelline.bookingScript" style="font-family:var(--mono);font-size:12px;min-height:200px;white-space:pre;">${esc(tl.bookingScript)}</textarea>
+        </div>
+        <p style="margin-top:10px;font-size:13px;color:var(--ink-3);line-height:1.6;">
+          В письме от поддержки этот скрипт будет помечен примерно так:
+          «Скрипт для формы бронирования» или «booking-form».
+          Внутри он должен содержать <code>'embed', 'booking-form'</code>.
+        </p>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-head"><div class="group-title"><span class="num">3</span>Резервный вариант — простой contextId</div></div>
+      <div class="group-body">
+        <p style="font-size:13px;color:var(--ink-3);line-height:1.6;margin-bottom:14px;">
+          Если поддержка вместо скриптов прислала только идентификатор отеля
+          (формат <code>TL-INT-xxx-xxx</code>) — вставьте его сюда, мы соберём
+          стандартный скрипт сами. Если выше уже заполнены скрипты — это поле игнорируется.
+        </p>
         <div class="fields">
           <div class="field full">
-            <label>Идентификатор контекста (contextId)
-              <span class="lbl-hint">формат: TL-INT-xxx-xxx</span>
-            </label>
-            <input type="text" data-path="travelline.contextId"
-              placeholder="TL-INT-your-hotel.code"
+            <label>contextId</label>
+            <input type="text" data-path="travelline.contextId" placeholder="TL-INT-..."
               value="${esc(tl.contextId)}"
               style="font-family:var(--mono);font-size:14px;letter-spacing:0.05em;">
           </div>
@@ -570,31 +625,12 @@ function renderTravelline() {
     </div>
 
     <div class="group">
-      <div class="group-head"><div class="group-title"><span class="num">?</span>Где взять contextId</div></div>
+      <div class="group-head"><div class="group-title"><span class="num">i</span>Поддержка TravelLine</div></div>
       <div class="group-body">
-        <ol style="padding-left:22px;line-height:1.8;color:var(--ink-2);font-size:14px;">
-          <li>Войдите в личный кабинет <a href="https://my.tlintegration.com" target="_blank" style="color:var(--brass);text-decoration:underline;">my.tlintegration.com</a>.</li>
-          <li>Раздел <em>«Настройки» → «Интеграция»</em>.</li>
-          <li>Скопируйте идентификатор вида <code>TL-INT-...</code>.</li>
-          <li>Если кода нет — обратитесь в техподдержку TravelLine:
-            <ul style="margin-top:6px;">
-              <li>Тел: <strong>8 800 555-20-30</strong></li>
-              <li>Email: <strong>support@travelline.ru</strong></li>
-            </ul>
-          </li>
-          <li>В кабинете TravelLine в настройках модуля укажите адрес страницы бронирования:
-            <code>https://&lt;ваш-домен&gt;/booking</code> — туда виджет поиска перенаправляет гостя после выбора дат.</li>
-        </ol>
-      </div>
-    </div>
-
-    <div class="group">
-      <div class="group-head"><div class="group-title"><span class="num">i</span>Что произойдёт после сохранения</div></div>
-      <div class="group-body">
-        <ul style="padding-left:22px;line-height:1.8;color:var(--ink-2);font-size:14px;">
-          <li>На главной в секции «Бронирование» появится виджет поиска TravelLine вместо текущей формы.</li>
-          <li>Страница <code>/booking</code> начнёт показывать полный модуль бронирования.</li>
-          <li>Если очистить поле <strong>contextId</strong> — сайт вернётся к резервной форме «Отправить запрос».</li>
+        <ul style="padding-left:22px;line-height:1.9;color:var(--ink-2);font-size:14px;">
+          <li>Email: <strong>support@travelline.ru</strong></li>
+          <li>Тел: <strong>8 800 555-20-30</strong></li>
+          <li>Личный кабинет: <a href="https://my.tlintegration.com" target="_blank" style="color:var(--brass);text-decoration:underline;">my.tlintegration.com</a></li>
         </ul>
       </div>
     </div>`;

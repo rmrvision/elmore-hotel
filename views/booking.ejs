@@ -85,17 +85,20 @@
 </header>
 
 <main class="booking-frame">
+  <% const hasTl = content.travelline && (content.travelline.bookingScript || content.travelline.contextId); %>
   <div id="tl-booking-form">
-    <% if (!content.travelline || !content.travelline.contextId) { %>
+    <% if (!hasTl) { %>
       <div class="tl-empty">
         Модуль бронирования не настроен
-        <div class="small">— Задайте contextId TravelLine в админке —</div>
+        <div class="small">— Задайте contextId или скрипт TravelLine в админке —</div>
       </div>
     <% } %>
   </div>
 </main>
 
-<% if (content.travelline && content.travelline.contextId) { %>
+<% if (content.travelline && content.travelline.bookingScript) { %>
+  <%- content.travelline.bookingScript %>
+<% } else if (content.travelline && content.travelline.contextId) { %>
 <script>
   window.onload = function() {
     (function(w){

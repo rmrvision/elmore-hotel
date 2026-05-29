@@ -275,7 +275,9 @@
   "travelline": {
     "contextId": "",
     "lang": "ru",
-    "_help": "contextId — ваш идентификатор от TravelLine, формат: TL-INT-xxx-xxx. Если пусто — показывается резервная форма."
+    "searchScript": "",
+    "bookingScript": "",
+    "_help": "Два способа: либо contextId (мы соберём скрипт сами), либо вставьте готовые скрипты от TravelLine в searchScript и bookingScript. Готовые скрипты имеют приоритет."
   },
   "contact": {
     "addressLabel": "— Адрес",

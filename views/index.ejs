@@ -221,8 +221,14 @@
     <p class="reveal reveal-d3"><%= content.reserve.description %></p>
   </div>
 
-  <% if (content.travelline && content.travelline.contextId) { %>
-    <!-- TravelLine — форма поиска -->
+  <% if (content.travelline && content.travelline.searchScript) { %>
+    <!-- TravelLine — собственный скрипт от поддержки -->
+    <div class="tl-wrap reveal reveal-d4">
+      <div id="tl-search-form"></div>
+    </div>
+    <%- content.travelline.searchScript %>
+  <% } else if (content.travelline && content.travelline.contextId) { %>
+    <!-- TravelLine — стандартный скрипт по contextId -->
     <div class="tl-wrap reveal reveal-d4">
       <div id="tl-search-form"></div>
     </div>
