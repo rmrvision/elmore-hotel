@@ -1093,25 +1093,31 @@ footer{
   .foot-bot{flex-direction:column;gap:14px;text-align:center;}
 }
 
-/* ─────────── desktop downscale (визуальное уменьшение без изменения дизайна) ─────────── */
+/* ─────────── desktop compactness (уменьшение высот без изменения дизайна) ─────────── */
 @media (min-width: 1024px){
-  html{ zoom: 0.85 !important; }
+  /* hero перестаёт быть на весь экран */
+  .hero{ min-height:0 !important; padding-top:120px !important; padding-bottom:50px !important; }
+  /* изображение в hero — менее вытянутое */
+  .hero-image{ aspect-ratio: 4/3 !important; max-height: 70vh; }
+  /* меньшие вертикальные отступы секций */
+  section{ padding-top:90px !important; padding-bottom:90px !important; }
+  /* фото номеров — менее вытянутые */
+  .room-img{ aspect-ratio: 16/10 !important; }
+  /* плитки галереи мельче по высоте */
+  .mosaic{ grid-auto-rows: minmax(60px, auto) !important; }
+  /* блоки удобств ниже */
+  .amen{ min-height: 160px !important; }
 }
-@media (min-width: 1440px){
-  html{ zoom: 0.75 !important; }
+@media (min-width: 1600px){
+  .hero{ padding-top:110px !important; padding-bottom:40px !important; }
+  .hero-image{ aspect-ratio: 16/10 !important; max-height: 65vh; }
+  section{ padding-top:80px !important; padding-bottom:80px !important; }
+  .room-img{ aspect-ratio: 16/9 !important; }
+  .mosaic{ grid-auto-rows: minmax(50px, auto) !important; }
+  .amen{ min-height: 140px !important; }
 }
-@media (min-width: 1800px){
-  html{ zoom: 0.65 !important; }
-}
-@media (min-width: 2200px){
-  html{ zoom: 0.55 !important; }
-}
-@media (min-width: 2600px){
-  html{ zoom: 0.5 !important; }
-}
-@media (min-width: 3000px){
-  html{ zoom: 0.45 !important; }
-}
-@media (min-width: 3400px){
-  html{ zoom: 0.4 !important; }
+@media (min-width: 2000px){
+  .hero-image{ max-height: 55vh; }
+  section{ padding-top:70px !important; padding-bottom:70px !important; }
+  .mosaic{ grid-auto-rows: minmax(40px, auto) !important; }
 }
