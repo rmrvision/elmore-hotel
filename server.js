@@ -291,6 +291,40 @@ app.delete('/admin/api/uploads/:name', requireAuth, async (req, res) => {
   }
 });
 
+// SEO: robots.txt и sitemap.xml
+app.get('/robots.txt', (req, res) => {
+  const c = readContent();
+  const base = (c.seo && c.seo.siteUrl) || `${req.protocol}://${req.get('host')}`;
+  res.type('text/plain').send(
+`User-agent: *
+Disallow: /admin
+Disallow: /admin/
+
+Sitemap: ${base.replace(/\/$/, '')}/sitemap.xml
+`);
+});
+
+app.get('/sitemap.xml', (req, res) => {
+  const c = readContent();
+  const base = ((c.seo && c.seo.siteUrl) || `${req.protocol}://${req.get('host')}`).replace(/\/$/, '');
+  const today = new Date().toISOString().split('T')[0];
+  const urls = [
+    { loc: `${base}/`,        priority: '1.0', changefreq: 'weekly' },
+    { loc: `${base}/booking`, priority: '0.9', changefreq: 'weekly' },
+  ];
+  const xml =
+`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map(u => `  <url>
+    <loc>${u.loc}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${u.changefreq}</changefreq>
+    <priority>${u.priority}</priority>
+  </url>`).join('\n')}
+</urlset>`;
+  res.type('application/xml').send(xml);
+});
+
 // healthcheck
 app.get('/healthz', (req, res) => res.json({ ok: true, ts: Date.now(), s3: USE_S3 }));
 

@@ -265,6 +265,13 @@
     ],
     "buttonLabel": "Отправить запрос"
   },
+  "seo": {
+    "yandexVerification": "",
+    "yandexMetrikaId": "",
+    "googleVerification": "",
+    "siteUrl": "https://elmorehotel.ru",
+    "_help": "yandexVerification — код из <meta name=yandex-verification ...>. yandexMetrikaId — номер счётчика (только цифры). siteUrl — для sitemap.xml."
+  },
   "travelline": {
     "contextId": "",
     "lang": "ru",

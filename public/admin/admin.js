@@ -24,7 +24,8 @@ const SECTIONS = {
   footer:     { title: 'Подвал',        em: 'низ страницы',     eyebrow: '— 08 · Pied' },
   site:       { title: 'Шапка',         em: 'навигация',        eyebrow: '— 09 · Navigation' },
   travelline: { title: 'TravelLine',    em: 'модуль бронирования', eyebrow: '— 10 · Booking Engine' },
-  media:      { title: 'Медиатека',     em: 'изображения',      eyebrow: '— 11 · Médias' },
+  seo:        { title: 'SEO',           em: 'аналитика и поиск',   eyebrow: '— 11 · Webmaster · Метрика' },
+  media:      { title: 'Медиатека',     em: 'изображения',      eyebrow: '— 12 · Médias' },
 };
 
 /* ─── helpers ─────────────────────────────────────────── */
@@ -84,6 +85,7 @@ function render() {
     case 'footer':     html += renderFooter(); break;
     case 'site':       html += renderSite(); break;
     case 'travelline': html += renderTravelline(); break;
+    case 'seo':        html += renderSeo(); break;
     case 'media':      html += renderMedia(); break;
   }
   panel.innerHTML = html;
@@ -594,6 +596,126 @@ function renderTravelline() {
           <li>Страница <code>/booking</code> начнёт показывать полный модуль бронирования.</li>
           <li>Если очистить поле <strong>contextId</strong> — сайт вернётся к резервной форме «Отправить запрос».</li>
         </ul>
+      </div>
+    </div>`;
+}
+
+function renderSeo() {
+  if (!state.seo) state.seo = { yandexVerification: '', yandexMetrikaId: '', googleVerification: '', siteUrl: '' };
+  const s = state.seo;
+  const yv = !!s.yandexVerification, ym = !!s.yandexMetrikaId, gv = !!s.googleVerification;
+  return `
+    <p class="panel-desc">
+      Подключение Яндекс Вебмастера и Яндекс Метрики. Также можно подтвердить право
+      на сайт в Google Search Console. Все коды вшиваются в <code>&lt;head&gt;</code>
+      обеих страниц (главной и /booking).
+    </p>
+
+    <div class="group">
+      <div class="group-head">
+        <div class="group-title"><span class="num">▸</span>Яндекс Вебмастер
+          <span style="font-family:var(--mono);font-size:10px;letter-spacing:0.25em;margin-left:14px;color:${yv ? '#3F7044' : 'var(--brass)'};">
+            ${yv ? '● ПОДКЛЮЧЕНО' : '● НЕ ПОДКЛЮЧЕНО'}
+          </span>
+        </div>
+      </div>
+      <div class="group-body">
+        <div class="fields">
+          <div class="field full">
+            <label>Код верификации <span class="lbl-hint">из meta-тега</span></label>
+            <input type="text" data-path="seo.yandexVerification"
+              placeholder="abc123def456..."
+              value="${esc(s.yandexVerification)}"
+              style="font-family:var(--mono);font-size:14px;letter-spacing:0.05em;">
+          </div>
+        </div>
+        <div style="margin-top:18px;padding:18px 22px;background:var(--bone-2);border:1px solid var(--line);">
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--brass);margin-bottom:10px;">— Как получить</div>
+          <ol style="padding-left:22px;line-height:1.8;color:var(--ink-2);font-size:13px;">
+            <li>Зайти в <a href="https://webmaster.yandex.ru" target="_blank" style="color:var(--brass);text-decoration:underline;">webmaster.yandex.ru</a> → добавить сайт <code>${esc(s.siteUrl || 'https://elmorehotel.ru')}</code></li>
+            <li>Выбрать способ верификации <strong>«Мета-тег»</strong></li>
+            <li>Яндекс покажет строку вида <code style="font-size:11px;">&lt;meta name="yandex-verification" content="<u>abc123</u>"&gt;</code></li>
+            <li>Скопировать значение <code>content="..."</code> (только то, что в кавычках) → вставить выше</li>
+            <li><strong>Сохранить</strong> в админке, дождаться редеплоя, нажать в Вебмастере «Проверить»</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-head">
+        <div class="group-title"><span class="num">▸</span>Яндекс Метрика
+          <span style="font-family:var(--mono);font-size:10px;letter-spacing:0.25em;margin-left:14px;color:${ym ? '#3F7044' : 'var(--brass)'};">
+            ${ym ? '● ПОДКЛЮЧЕНО' : '● НЕ ПОДКЛЮЧЕНО'}
+          </span>
+        </div>
+      </div>
+      <div class="group-body">
+        <div class="fields">
+          <div class="field full">
+            <label>Номер счётчика <span class="lbl-hint">только цифры</span></label>
+            <input type="text" data-path="seo.yandexMetrikaId"
+              placeholder="12345678"
+              value="${esc(s.yandexMetrikaId)}"
+              style="font-family:var(--mono);font-size:14px;letter-spacing:0.1em;">
+          </div>
+        </div>
+        <div style="margin-top:18px;padding:18px 22px;background:var(--bone-2);border:1px solid var(--line);">
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--brass);margin-bottom:10px;">— Как получить</div>
+          <ol style="padding-left:22px;line-height:1.8;color:var(--ink-2);font-size:13px;">
+            <li>Зайти в <a href="https://metrika.yandex.ru" target="_blank" style="color:var(--brass);text-decoration:underline;">metrika.yandex.ru</a> → создать счётчик</li>
+            <li>Адрес сайта: <code>${esc(s.siteUrl || 'https://elmorehotel.ru')}</code></li>
+            <li>Включить опции: <strong>Карта кликов</strong>, <strong>Вебвизор</strong>, <strong>Точный показатель отказов</strong> (мы уже настроили в коде)</li>
+            <li>Скопировать <strong>номер счётчика</strong> (8 цифр) — он в верху страницы счётчика</li>
+            <li>Вставить выше → <strong>Сохранить</strong></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-head">
+        <div class="group-title"><span class="num">▸</span>Google Search Console
+          <span style="font-family:var(--mono);font-size:10px;letter-spacing:0.25em;margin-left:14px;color:${gv ? '#3F7044' : 'var(--ink-3)'};">
+            ${gv ? '● ПОДКЛЮЧЕНО' : '○ ОПЦИОНАЛЬНО'}
+          </span>
+        </div>
+      </div>
+      <div class="group-body">
+        <div class="fields">
+          <div class="field full">
+            <label>Код верификации Google</label>
+            <input type="text" data-path="seo.googleVerification"
+              placeholder="abc123..."
+              value="${esc(s.googleVerification)}"
+              style="font-family:var(--mono);font-size:14px;letter-spacing:0.05em;">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-head"><div class="group-title"><span class="num">▸</span>Базовые SEO-настройки</div></div>
+      <div class="group-body">
+        <div class="fields">
+          <div class="field full">
+            <label>URL сайта <span class="lbl-hint">для sitemap.xml</span></label>
+            <input type="text" data-path="seo.siteUrl" placeholder="https://elmorehotel.ru" value="${esc(s.siteUrl)}">
+          </div>
+        </div>
+        <div style="margin-top:18px;padding:18px 22px;background:var(--bone-2);border:1px solid var(--line);">
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--brass);margin-bottom:10px;">— Автоматические эндпоинты</div>
+          <p style="line-height:1.7;color:var(--ink-2);font-size:13px;">
+            Сайт автоматически отдаёт:
+          </p>
+          <ul style="padding-left:22px;line-height:1.9;color:var(--ink-2);font-size:13px;">
+            <li><a href="/robots.txt" target="_blank" style="color:var(--brass);text-decoration:underline;font-family:var(--mono);">/robots.txt</a> — для поисковых роботов</li>
+            <li><a href="/sitemap.xml" target="_blank" style="color:var(--brass);text-decoration:underline;font-family:var(--mono);">/sitemap.xml</a> — карта сайта (главная + /booking)</li>
+          </ul>
+          <p style="margin-top:10px;line-height:1.7;color:var(--ink-2);font-size:13px;">
+            После добавления сайта в Вебмастер укажите там же ссылку на sitemap.xml для ускоренной индексации.
+          </p>
+        </div>
       </div>
     </div>`;
 }
