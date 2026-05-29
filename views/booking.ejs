@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Бронирование — <%= content.site.brand %></title>
+<meta name="description" content="Бронирование номеров в отеле <%= content.site.brand %>." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css" />
+<style>
+  .booking-page{min-height:100vh;background:var(--bone);}
+  .booking-hero{
+    padding:160px 44px 60px;
+    display:grid;grid-template-columns:auto 1fr auto;gap:30px;align-items:end;
+    border-bottom:1px solid var(--line);
+  }
+  .booking-back{
+    font-family:var(--mono);font-size:10px;letter-spacing:0.3em;text-transform:uppercase;
+    color:var(--ink-2);display:inline-flex;align-items:center;gap:10px;padding-bottom:10px;
+    transition:gap 0.3s ease, color 0.3s ease;
+  }
+  .booking-back:hover{gap:18px;color:var(--brass);}
+  .booking-title{
+    font-family:var(--serif);font-weight:300;font-size:clamp(40px,6vw,84px);
+    line-height:0.95;letter-spacing:-0.03em;text-align:center;
+  }
+  .booking-title em{font-style:italic;color:var(--brass);font-weight:300;}
+  .booking-mark{
+    font-family:var(--mono);font-size:10px;letter-spacing:0.3em;text-transform:uppercase;
+    color:var(--ink-2);text-align:right;
+  }
+  .booking-mark .brass{color:var(--brass);}
+
+  .booking-frame{
+    max-width:1240px;margin:0 auto;padding:50px 44px 100px;
+  }
+  #tl-booking-form{
+    background:var(--cream);
+    border:1px solid var(--line);
+    min-height:520px;
+    padding:20px;
+  }
+  .tl-empty{
+    padding:80px 30px;text-align:center;
+    font-family:var(--serif);font-size:24px;font-style:italic;color:var(--ink-2);font-weight:300;
+  }
+  .tl-empty .small{
+    margin-top:14px;font-family:var(--mono);font-size:10px;letter-spacing:0.3em;text-transform:uppercase;
+    font-style:normal;color:var(--ink-2);
+  }
+
+  @media (max-width:760px){
+    .booking-hero{padding:120px 22px 40px;grid-template-columns:1fr;gap:20px;text-align:center;}
+    .booking-mark{text-align:center;}
+    .booking-frame{padding:30px 22px 60px;}
+  }
+</style>
+</head>
+<body class="booking-page">
+
+<nav class="top" id="nav">
+  <a href="/" class="brand"><span class="brand-mark"></span><%= content.site.brand.split(' ')[0] %><i>&nbsp;<%= content.site.brandItalic %></i></a>
+  <div class="nav-links">
+    <a href="/#philosophy">Философия</a>
+    <a href="/#rooms">Номера</a>
+    <a href="/#amenities">Удобства</a>
+    <a href="/#contact">Контакты</a>
+  </div>
+  <a href="/" class="nav-cta">← На главную</a>
+</nav>
+
+<header class="booking-hero">
+  <a href="/" class="booking-back">← Назад</a>
+  <h1 class="booking-title">Бронирование <em>номера</em></h1>
+  <div class="booking-mark"><%= content.site.brand %> <span class="brass">·</span> MMXXVI</div>
+</header>
+
+<main class="booking-frame">
+  <div id="tl-booking-form">
+    <% if (!content.travelline || !content.travelline.contextId) { %>
+      <div class="tl-empty">
+        Модуль бронирования не настроен
+        <div class="small">— Задайте contextId TravelLine в админке —</div>
+      </div>
+    <% } %>
+  </div>
+</main>
+
+<% if (content.travelline && content.travelline.contextId) { %>
+<script>
+  window.onload = function() {
+    (function(w){
+      var q = [
+        ['setContext', '<%= content.travelline.contextId %>', '<%= content.travelline.lang || "ru" %>'],
+        ['embed', 'booking-form', { container: 'tl-booking-form' }]
+      ];
+      var t = w.travelline = (w.travelline || {});
+      var ti = t.integration = (t.integration || {});
+      ti.__cq = ti.__cq ? ti.__cq.concat(q) : q;
+      if (!ti.__loader) {
+        ti.__loader = true;
+        var d = w.document, p = d.location.protocol, s = d.createElement('script');
+        s.type = 'text/javascript'; s.async = true;
+        s.src = (p === 'https:' ? p : 'http:') + '//ibe.tlintegration.com/integration/loader.js';
+        (d.getElementsByTagName('head')[0] || d.getElementsByTagName('body')[0]).appendChild(s);
+      }
+    })(window);
+  };
+</script>
+<% } %>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+</script>
+</body>
+</html>

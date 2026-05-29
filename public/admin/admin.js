@@ -23,7 +23,8 @@ const SECTIONS = {
   contact:    { title: 'Контакты',      em: 'связь',            eyebrow: '— 07 · Contact' },
   footer:     { title: 'Подвал',        em: 'низ страницы',     eyebrow: '— 08 · Pied' },
   site:       { title: 'Шапка',         em: 'навигация',        eyebrow: '— 09 · Navigation' },
-  media:      { title: 'Медиатека',     em: 'изображения',      eyebrow: '— 10 · Médias' },
+  travelline: { title: 'TravelLine',    em: 'модуль бронирования', eyebrow: '— 10 · Booking Engine' },
+  media:      { title: 'Медиатека',     em: 'изображения',      eyebrow: '— 11 · Médias' },
 };
 
 /* ─── helpers ─────────────────────────────────────────── */
@@ -82,6 +83,7 @@ function render() {
     case 'contact':    html += renderContact(); break;
     case 'footer':     html += renderFooter(); break;
     case 'site':       html += renderSite(); break;
+    case 'travelline': html += renderTravelline(); break;
     case 'media':      html += renderMedia(); break;
   }
   panel.innerHTML = html;
@@ -461,6 +463,81 @@ function renderSite() {
             </div>`).join('')}
         </div>
         <button class="add-btn" data-array-add="site.navLinks" data-template='{"label":"Новая","href":"#"}'>+ Добавить ссылку</button>
+      </div>
+    </div>`;
+}
+
+function renderTravelline() {
+  // ленивая инициализация на случай старого content.json
+  if (!state.travelline) state.travelline = { contextId: '', lang: 'ru' };
+  const tl = state.travelline;
+  const configured = !!tl.contextId;
+  return `
+    <p class="panel-desc">
+      Подключение модуля онлайн-бронирования <strong>TL: Booking Engine</strong>.
+      Скрипт подгружается с <code>ibe.tlintegration.com</code>, виджет поиска
+      встраивается в секцию «Бронирование» на главной, полная форма — на странице
+      <a href="/booking" target="_blank" style="color:var(--brass);">/booking</a>.
+    </p>
+
+    <div class="group">
+      <div class="group-head">
+        <div class="group-title"><span class="num">▸</span>Настройки интеграции
+          <span style="font-family:var(--mono);font-size:10px;letter-spacing:0.25em;margin-left:14px;color:${configured ? '#3F7044' : 'var(--brass)'};">
+            ${configured ? '● ПОДКЛЮЧЕНО' : '● НЕ ПОДКЛЮЧЕНО'}
+          </span>
+        </div>
+      </div>
+      <div class="group-body">
+        <div class="fields">
+          <div class="field full">
+            <label>Идентификатор контекста (contextId)
+              <span class="lbl-hint">формат: TL-INT-xxx-xxx</span>
+            </label>
+            <input type="text" data-path="travelline.contextId"
+              placeholder="TL-INT-your-hotel.code"
+              value="${esc(tl.contextId)}"
+              style="font-family:var(--mono);font-size:14px;letter-spacing:0.05em;">
+          </div>
+          <div class="field">
+            <label>Язык модуля</label>
+            <select data-path="travelline.lang">
+              ${['ru','en','de','fr','es','it','zh'].map(l =>
+                `<option value="${l}" ${tl.lang === l ? 'selected':''}>${l.toUpperCase()}</option>`
+              ).join('')}
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-head"><div class="group-title"><span class="num">?</span>Где взять contextId</div></div>
+      <div class="group-body">
+        <ol style="padding-left:22px;line-height:1.8;color:var(--ink-2);font-size:14px;">
+          <li>Войдите в личный кабинет <a href="https://my.tlintegration.com" target="_blank" style="color:var(--brass);text-decoration:underline;">my.tlintegration.com</a>.</li>
+          <li>Раздел <em>«Настройки» → «Интеграция»</em>.</li>
+          <li>Скопируйте идентификатор вида <code>TL-INT-...</code>.</li>
+          <li>Если кода нет — обратитесь в техподдержку TravelLine:
+            <ul style="margin-top:6px;">
+              <li>Тел: <strong>8 800 555-20-30</strong></li>
+              <li>Email: <strong>support@travelline.ru</strong></li>
+            </ul>
+          </li>
+          <li>В кабинете TravelLine в настройках модуля укажите адрес страницы бронирования:
+            <code>https://&lt;ваш-домен&gt;/booking</code> — туда виджет поиска перенаправляет гостя после выбора дат.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-head"><div class="group-title"><span class="num">i</span>Что произойдёт после сохранения</div></div>
+      <div class="group-body">
+        <ul style="padding-left:22px;line-height:1.8;color:var(--ink-2);font-size:14px;">
+          <li>На главной в секции «Бронирование» появится виджет поиска TravelLine вместо текущей формы.</li>
+          <li>Страница <code>/booking</code> начнёт показывать полный модуль бронирования.</li>
+          <li>Если очистить поле <strong>contextId</strong> — сайт вернётся к резервной форме «Отправить запрос».</li>
+        </ul>
       </div>
     </div>`;
 }

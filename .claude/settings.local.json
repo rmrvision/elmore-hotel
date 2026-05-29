@@ -44,7 +44,10 @@
       "Bash(curl -sL https://raw.githubusercontent.com/timeweb-cloud/s3-examples/master/nodejs/src/get-object.js)",
       "Bash(curl -sL https://raw.githubusercontent.com/timeweb-cloud/s3-examples/master/nodejs/src/sample.js)",
       "Bash(git commit -m 'feat: интеграция с Timeweb S3 *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "WebFetch(domain:www.travelline.ru)",
+      "WebFetch(domain:opttour.ru)",
+      "Bash(git commit -m 'feat: интеграция модуля бронирования TravelLine *)"
     ]
   }
 }

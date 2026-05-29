@@ -195,6 +195,10 @@ app.get('/', (req, res) => {
   res.render('index', { content: readContent() });
 });
 
+app.get('/booking', (req, res) => {
+  res.render('booking', { content: readContent() });
+});
+
 app.get('/admin/login', (req, res) => {
   if (req.session.authed) return res.redirect('/admin');
   res.render('admin-login', { error: null });

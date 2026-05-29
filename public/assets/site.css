@@ -777,6 +777,28 @@ section{padding:140px 44px;position:relative;}
   .gallery-foot{flex-direction:column;gap:14px;text-align:center;}
 }
 
+/* ─────────── TravelLine widget container ─────────── */
+.tl-wrap{
+  max-width:980px;
+  margin:0 auto;
+  border:1px solid var(--line);
+  background:var(--bone);
+  padding:24px;
+  position:relative;
+}
+.tl-wrap::before{
+  content:"— Powered by TravelLine";
+  position:absolute;top:-22px;right:0;
+  font-family:var(--mono);font-size:9px;letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--ink-2);opacity:0.55;
+}
+#tl-search-form{ min-height:80px; }
+#tl-search-form:empty::before{
+  content:"— Загрузка модуля бронирования —";
+  display:flex;align-items:center;justify-content:center;height:80px;
+  font-family:var(--mono);font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--ink-2);
+}
+
 /* ─────────── reservation / footer ─────────── */
 .reserve{
   padding:160px 44px 60px;

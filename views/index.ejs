@@ -191,19 +191,46 @@
     <h2 class="reserve-title reveal reveal-d2"><%= content.reserve.titleLine1 %><br/><em><%= content.reserve.titleLine2 %></em></h2>
     <p class="reveal reveal-d3"><%= content.reserve.description %></p>
   </div>
-  <form class="reserve-form reveal reveal-d4" onsubmit="event.preventDefault(); alert('Спасибо! Мы свяжемся с вами в течение часа.');">
-    <div class="reserve-field"><label>Заезд</label><input type="date" required /></div>
-    <div class="reserve-field"><label>Выезд</label><input type="date" required /></div>
-    <div class="reserve-field"><label>Гости</label>
-      <select><option>1 гость</option><option>2 гостя</option><option>3 гостя</option><option>4 гостя</option></select>
+
+  <% if (content.travelline && content.travelline.contextId) { %>
+    <!-- TravelLine — форма поиска -->
+    <div class="tl-wrap reveal reveal-d4">
+      <div id="tl-search-form"></div>
     </div>
-    <div class="reserve-field"><label>Категория</label>
-      <select><% content.reserve.categories.forEach(c => { %><option><%= c %></option><% }) %></select>
-    </div>
-    <button type="submit" class="reserve-btn">
-      <span class="dot"></span><%= content.reserve.buttonLabel %><span class="dot"></span>
-    </button>
-  </form>
+    <script>
+      (function(w){
+        var q = [
+          ['setContext', '<%= content.travelline.contextId %>', '<%= content.travelline.lang || "ru" %>'],
+          ['embed', 'search-form', { container: 'tl-search-form' }]
+        ];
+        var t = w.travelline = (w.travelline || {});
+        var ti = t.integration = (t.integration || {});
+        ti.__cq = ti.__cq ? ti.__cq.concat(q) : q;
+        if (!ti.__loader) {
+          ti.__loader = true;
+          var d = w.document, p = d.location.protocol, s = d.createElement('script');
+          s.type = 'text/javascript'; s.async = true;
+          s.src = (p === 'https:' ? p : 'http:') + '//ibe.tlintegration.com/integration/loader.js';
+          (d.getElementsByTagName('head')[0] || d.getElementsByTagName('body')[0]).appendChild(s);
+        }
+      })(window);
+    </script>
+  <% } else { %>
+    <!-- Резервная форма (если TravelLine не настроен) -->
+    <form class="reserve-form reveal reveal-d4" onsubmit="event.preventDefault(); alert('Спасибо! Мы свяжемся с вами в течение часа.');">
+      <div class="reserve-field"><label>Заезд</label><input type="date" required /></div>
+      <div class="reserve-field"><label>Выезд</label><input type="date" required /></div>
+      <div class="reserve-field"><label>Гости</label>
+        <select><option>1 гость</option><option>2 гостя</option><option>3 гостя</option><option>4 гостя</option></select>
+      </div>
+      <div class="reserve-field"><label>Категория</label>
+        <select><% content.reserve.categories.forEach(c => { %><option><%= c %></option><% }) %></select>
+      </div>
+      <button type="submit" class="reserve-btn">
+        <span class="dot"></span><%= content.reserve.buttonLabel %><span class="dot"></span>
+      </button>
+    </form>
+  <% } %>
 </section>
 
 <!-- contact -->
