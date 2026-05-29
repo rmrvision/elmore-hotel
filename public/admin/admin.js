@@ -148,6 +148,32 @@ function bindFields() {
       render();
     });
   });
+  // добавление изображения через медиа-пикер
+  panel.querySelectorAll('[data-add-image]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const path = btn.dataset.addImage;
+      openMediaPicker((url) => {
+        const arr = getByPath(state, path) || [];
+        arr.push(url);
+        setByPath(state, path, arr);
+        setDirty();
+        render();
+      });
+    });
+  });
+  // перестановка изображения в массиве
+  panel.querySelectorAll('[data-move-image]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const [path, idxStr, dirStr] = btn.dataset.moveImage.split('|');
+      const idx = +idxStr, dir = +dirStr;
+      const arr = getByPath(state, path);
+      const next = idx + dir;
+      if (next < 0 || next >= arr.length) return;
+      [arr[idx], arr[next]] = [arr[next], arr[idx]];
+      setDirty();
+      render();
+    });
+  });
   panel.querySelectorAll('[data-array-remove]').forEach(btn => {
     btn.addEventListener('click', () => {
       const [path, idx] = btn.dataset.arrayRemove.split('|');
@@ -157,6 +183,32 @@ function bindFields() {
       render();
     });
   });
+}
+
+/* ─── поле — список изображений (для номеров) ────────── */
+function imagesField(label, basePath, images) {
+  const arr = images || [];
+  return `
+    <div class="field full">
+      <label>${esc(label)} <span class="lbl-hint">${arr.length ? arr.length + ' шт.' : '— нет фото'}</span></label>
+      <div class="imgs-list">
+        ${arr.map((url, i) => `
+          <div class="imgs-item">
+            <div class="imgs-thumb">
+              <img src="${esc(url)}" alt="">
+              <div class="imgs-num">${String(i+1).padStart(2,'0')}</div>
+            </div>
+            <div class="imgs-controls">
+              <button class="btn ghost" data-pick-image="${esc(basePath)}.images[${i}]" title="Заменить">Заменить</button>
+              <button class="btn ghost" data-move-image="${esc(basePath)}.images|${i}|-1" title="Влево" ${i===0 ? 'disabled':''}>←</button>
+              <button class="btn ghost" data-move-image="${esc(basePath)}.images|${i}|1"  title="Вправо" ${i===arr.length-1 ? 'disabled':''}>→</button>
+              <button class="btn danger" data-array-remove="${esc(basePath)}.images|${i}" title="Удалить">×</button>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <button class="add-btn" data-add-image="${esc(basePath)}.images">+ Добавить фото</button>
+    </div>`;
 }
 
 /* ─── поле — изображение ─────────────────────────────── */
@@ -235,6 +287,10 @@ function renderPhilosophy() {
 
 function renderRooms() {
   const r = state.rooms;
+  // миграция: одиночное `image` → массив `images`
+  r.items.forEach(it => {
+    if (!Array.isArray(it.images)) it.images = it.image ? [it.image] : [];
+  });
   return `
     <div class="fields">
       <div class="field"><label>Eyebrow</label><input type="text" data-path="rooms.eyebrow" value="${esc(r.eyebrow)}"></div>
@@ -259,7 +315,7 @@ function renderRooms() {
             <div class="field"><label>Категория / подзаголовок</label><input type="text" data-path="rooms.items[${i}].category" value="${esc(item.category)}"></div>
             <div class="field full"><label>Описание</label><textarea data-path="rooms.items[${i}].description">${esc(item.description)}</textarea></div>
             <div class="field"><label>Метка на фото</label><input type="text" data-path="rooms.items[${i}].imageTag" value="${esc(item.imageTag)}"></div>
-            ${imageField('Фото номера', `rooms.items[${i}].image`)}
+            ${imagesField('Фотографии номера', `rooms.items[${i}]`, item.images)}
           </div>
 
           <div class="group" style="margin-top:24px;">
@@ -282,7 +338,7 @@ function renderRooms() {
 
     <button class="add-btn" data-array-add="rooms.items" data-template='${esc(JSON.stringify({
       num:"N° 04",title:"Новый номер",titleItalic:"",category:"Catégorie",description:"Описание...",
-      specs:[{lbl:"Гости",val:"2"},{lbl:"Площадь",val:"20 м²"}],image:"",imageTag:"Pl. — "
+      specs:[{lbl:"Гости",val:"2"},{lbl:"Площадь",val:"20 м²"}],images:[],imageTag:"Pl. — "
     }))}'>+ Добавить категорию номера</button>`;
 }
 
