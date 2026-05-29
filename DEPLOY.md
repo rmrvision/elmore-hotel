@@ -99,14 +99,14 @@ https://s3.twcstorage.ru/elmore-storage/uploads/1715000000-foto.jpg
 ## Шаг 5 — Кастомные домены
 
 В Timeweb App Platform → вкладка **«Домены»**:
-1. Добавьте `elmore.com` (основной).
-2. Добавьте `admin.elmore.com` (субдомен админки).
+1. Добавьте `elmorehotel.ru` (основной).
+2. Добавьте `admin.elmorehotel.ru` (субдомен админки).
 3. У регистратора домена пропишите CNAME-записи на технический домен Timeweb (платформа подскажет какой).
 4. SSL автоматически выпустится через Let's Encrypt.
 
 Серверная логика субдоменов уже встроена:
-- На `admin.elmore.com` корень `/` редиректит в `/admin`.
-- На `elmore.com` отдаётся обычный сайт.
+- На `admin.elmorehotel.ru` корень `/` редиректит в `/admin`.
+- На `elmorehotel.ru` отдаётся обычный сайт.
 
 ---
 

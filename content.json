@@ -142,7 +142,7 @@
     "addressNote": "Открыто круглосуточно · Парковка во дворе",
     "linkLabel": "— Связь",
     "phone": "+7 700 123 45 67",
-    "email": "hello@elmore.hotel",
+    "email": "hello@elmorehotel.ru",
     "contactNote": "Администратор отвечает в течение часа\nв любое время суток."
   },
   "footer": {
@@ -161,7 +161,7 @@
         "title": "— Связь",
         "links": [
           { "label": "+7 700 123 45 67", "href": "tel:+77001234567" },
-          { "label": "hello@elmore.hotel", "href": "mailto:hello@elmore.hotel" }
+          { "label": "hello@elmorehotel.ru", "href": "mailto:hello@elmorehotel.ru" }
         ],
         "extra": "ул. Тенистая, 14\nАлматы"
       },
