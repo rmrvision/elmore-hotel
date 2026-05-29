@@ -776,10 +776,12 @@ function renderMedia() {
 async function refreshMedia() {
   const grid = document.getElementById('mediaPageGrid');
   const input = document.getElementById('mediaPageUpload');
-  if (input) {
+  if (input && !input.dataset.bound) {
+    input.dataset.bound = '1';
     input.addEventListener('change', async (e) => {
       const file = e.target.files[0];
       if (!file) return;
+      input.value = '';
       await uploadFile(file);
       refreshMedia();
     });
@@ -877,14 +879,22 @@ async function uploadFile(file) {
 uploadInput.addEventListener('change', async (e) => {
   const file = e.target.files[0];
   if (!file) return;
-  const url = await uploadFile(file);
-  if (url && pickerCallback) {
-    pickerCallback(url);
-    closeMediaPicker();
-  } else {
-    loadMediaList();
-  }
   uploadInput.value = '';
+  if (uploadInput.dataset.busy === '1') return;
+  uploadInput.dataset.busy = '1';
+  try {
+    const url = await uploadFile(file);
+    if (url && pickerCallback) {
+      const cb = pickerCallback;
+      pickerCallback = null;
+      cb(url);
+      closeMediaPicker();
+    } else {
+      loadMediaList();
+    }
+  } finally {
+    uploadInput.dataset.busy = '';
+  }
 });
 
 useUrlBtn.addEventListener('click', () => {
