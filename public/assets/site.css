@@ -1095,11 +1095,23 @@ footer{
 
 /* ─────────── desktop downscale (визуальное уменьшение без изменения дизайна) ─────────── */
 @media (min-width: 1024px){
-  html{ zoom: 0.8 !important; }
+  html{ zoom: 0.85 !important; }
 }
 @media (min-width: 1440px){
   html{ zoom: 0.75 !important; }
 }
 @media (min-width: 1800px){
-  html{ zoom: 0.7 !important; }
+  html{ zoom: 0.65 !important; }
+}
+@media (min-width: 2200px){
+  html{ zoom: 0.55 !important; }
+}
+@media (min-width: 2600px){
+  html{ zoom: 0.5 !important; }
+}
+@media (min-width: 3000px){
+  html{ zoom: 0.45 !important; }
+}
+@media (min-width: 3400px){
+  html{ zoom: 0.4 !important; }
 }
