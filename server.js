@@ -224,6 +224,16 @@ app.get('/admin', requireAuth, (req, res) => {
 // API: контент
 app.get('/admin/api/content', requireAuth, (req, res) => res.json(readContent()));
 
+// API: seed (стартовый контент из репозитория) — для одноклика «применить обновления»
+app.get('/admin/api/seed', requireAuth, (req, res) => {
+  try {
+    const seed = JSON.parse(fs.readFileSync(SEED_CONTENT, 'utf8'));
+    res.json(seed);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 app.put('/admin/api/content', requireAuth, async (req, res) => {
   try {
     const next = req.body;

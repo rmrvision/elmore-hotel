@@ -90,7 +90,74 @@ function render() {
   }
   panel.innerHTML = html;
   bindFields();
-  if (current === 'media') refreshMedia();
+  if (current === 'media')      refreshMedia();
+  if (current === 'travelline') checkSeedUpdates();
+}
+
+/* ─── проверка обновлений из репозитория для TravelLine ─── */
+async function checkSeedUpdates() {
+  try {
+    const res  = await fetch('/admin/api/seed');
+    const seed = await res.json();
+    const banner = document.getElementById('tl-import-banner');
+    const summaryEl = document.getElementById('tl-import-summary');
+    const btn = document.getElementById('tl-import-btn');
+    if (!banner) return;
+
+    const diffs = [];
+    // 1. Скрипты TravelLine
+    const seedTl = seed.travelline || {};
+    const stateTl = state.travelline || {};
+    if (seedTl.searchScript && seedTl.searchScript !== stateTl.searchScript) diffs.push('Скрипт виджета поиска');
+    if (seedTl.bookingScript && seedTl.bookingScript !== stateTl.bookingScript) diffs.push('Скрипт формы бронирования');
+    if (seedTl.contextId && !stateTl.contextId) diffs.push('contextId');
+
+    // 2. Идентификаторы номеров
+    const newIds = [];
+    (seed.rooms?.items || []).forEach((sr, i) => {
+      const cur = state.rooms?.items?.[i];
+      if (!cur) return;
+      const seedIdSpec = (sr.specs || []).find(s => (s.lbl || '').trim() === 'Идентификатор номера');
+      if (!seedIdSpec) return;
+      const has = (cur.specs || []).some(s => (s.lbl || '').trim() === 'Идентификатор номера');
+      if (!has) newIds.push(`${cur.title || sr.title}: ${seedIdSpec.val}`);
+    });
+    if (newIds.length) diffs.push(`Идентификаторы номеров TravelLine (${newIds.length} шт.)`);
+
+    if (!diffs.length) return;
+
+    banner.style.display = 'block';
+    summaryEl.innerHTML = 'Поддержка TravelLine прислала обновления:<br/>— ' +
+      diffs.map(d => esc(d)).join('<br/>— ');
+
+    btn.addEventListener('click', () => applySeedToState(seed));
+  } catch (e) {
+    console.error('seed check failed:', e);
+  }
+}
+
+function applySeedToState(seed) {
+  // TravelLine поля
+  const seedTl = seed.travelline || {};
+  state.travelline = state.travelline || { contextId: '', lang: 'ru', searchScript: '', bookingScript: '' };
+  if (seedTl.searchScript)  state.travelline.searchScript  = seedTl.searchScript;
+  if (seedTl.bookingScript) state.travelline.bookingScript = seedTl.bookingScript;
+  if (seedTl.contextId && !state.travelline.contextId) state.travelline.contextId = seedTl.contextId;
+  if (seedTl.lang) state.travelline.lang = seedTl.lang;
+
+  // Идентификаторы номеров (только если их ещё нет)
+  (seed.rooms?.items || []).forEach((sr, i) => {
+    const cur = state.rooms?.items?.[i];
+    if (!cur) return;
+    const seedIdSpec = (sr.specs || []).find(s => (s.lbl || '').trim() === 'Идентификатор номера');
+    if (!seedIdSpec) return;
+    const has = (cur.specs || []).some(s => (s.lbl || '').trim() === 'Идентификатор номера');
+    if (!has) cur.specs.push({ lbl: 'Идентификатор номера', val: seedIdSpec.val });
+  });
+
+  setDirty();
+  render();
+  showToast('Обновления применены — нажмите «Сохранить»');
 }
 
 /* ─── привязка полей через data-path ──────────────────── */
@@ -538,8 +605,16 @@ function renderTravelline() {
     <p class="panel-desc">
       Подключение модуля онлайн-бронирования <strong>TL: Booking Engine</strong>.
       Поддержка TravelLine сделает скрипты под наш дизайн и пришлёт их на почту.
-      Вставьте полученные скрипты в поля ниже — этого достаточно.
+      Вставьте полученные скрипты в поля ниже — или одним кликом импортируйте из репозитория.
     </p>
+
+    <div id="tl-import-banner" style="display:none;margin:24px 0;padding:22px 24px;background:linear-gradient(135deg, #2A241D 0%, #3F4730 100%);color:var(--cream);border:1px solid var(--brass);position:relative;">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--brass-soft);margin-bottom:10px;">— Обнаружены обновления в репозитории</div>
+      <div id="tl-import-summary" style="font-family:var(--serif);font-style:italic;font-size:22px;font-weight:300;line-height:1.3;margin-bottom:14px;color:var(--cream);"></div>
+      <button class="btn primary" id="tl-import-btn" style="background:var(--brass);color:var(--ink);">
+        <span class="dot" style="background:var(--ink);"></span>Применить из репозитория
+      </button>
+    </div>
 
     <div class="group">
       <div class="group-head">
