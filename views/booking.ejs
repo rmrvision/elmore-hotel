@@ -63,6 +63,9 @@
     .booking-mark{text-align:center;}
     .booking-frame{padding:30px 22px 60px;}
   }
+  @media (max-width:420px){
+    #tl-booking-form{padding:5px;}
+  }
 </style>
 </head>
 <body class="booking-page">
@@ -114,20 +117,22 @@
 </header>
 
 <main class="booking-frame">
-  <% const hasTl = content.travelline && (content.travelline.bookingScript || content.travelline.contextId); %>
-  <div id="tl-booking-form">
-    <% if (!hasTl) { %>
-      <div class="tl-empty">
-        Модуль бронирования не настроен
-        <div class="small">— Задайте contextId или скрипт TravelLine в админке —</div>
-      </div>
-    <% } %>
-  </div>
+  <% if (content.travelline && content.travelline.bookingScript) { %>
+    <!-- TravelLine скрипт от поддержки (содержит свой #tl-booking-form внутри) -->
+    <%- content.travelline.bookingScript %>
+  <% } else { %>
+    <div id="tl-booking-form">
+      <% if (!content.travelline || !content.travelline.contextId) { %>
+        <div class="tl-empty">
+          Модуль бронирования не настроен
+          <div class="small">— Задайте contextId или скрипт TravelLine в админке —</div>
+        </div>
+      <% } %>
+    </div>
+  <% } %>
 </main>
 
-<% if (content.travelline && content.travelline.bookingScript) { %>
-  <%- content.travelline.bookingScript %>
-<% } else if (content.travelline && content.travelline.contextId) { %>
+<% if (content.travelline && !content.travelline.bookingScript && content.travelline.contextId) { %>
 <script>
   window.onload = function() {
     (function(w){

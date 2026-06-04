@@ -86,6 +86,10 @@
           {
             "lbl": "Этаж",
             "val": "Цокольный"
+          },
+          {
+            "lbl": "Идентификатор номера",
+            "val": "233429"
           }
         ],
         "imageTag": "Pl. 01 — Économe",
@@ -115,6 +119,10 @@
           {
             "lbl": "Доп. место",
             "val": "Кресло"
+          },
+          {
+            "lbl": "Идентификатор номера",
+            "val": "233431"
           }
         ],
         "imageTag": "Pl. 02 — Supérieure",
@@ -144,6 +152,10 @@
           {
             "lbl": "Дети",
             "val": "до 16"
+          },
+          {
+            "lbl": "Идентификатор номера",
+            "val": "233432"
           }
         ],
         "imageTag": "Pl. 03 — Familiale",
@@ -275,8 +287,8 @@
   "travelline": {
     "contextId": "",
     "lang": "ru",
-    "searchScript": "",
-    "bookingScript": "",
+    "searchScript": "<style>\n#block-search,\n#block-search * {\n  box-sizing: border-box;\n}\n\n#block-search {\n  background: transparent;\n    max-width: 757px;\n    margin: 0 auto;\n    zoom: 1.2;\n}\n\n.tl-container {\n  padding: 0;\n}\n</style>\n<!-- start TL Search form script -->\n<div id=\"block-search\">\n  <div id=\"tl-search-form\" class=\"tl-container\">\n    <noindex><a href=\"https://www.travelline.ru/products/tl-hotel/\" rel=\"nofollow\" target=\"_blank\">TravelLine</a></noindex>\n  </div>\n</div>\n<!-- end TL Search form script -->\n\n<!-- start TL head script -->\n<script type='text/javascript'>\n    (function(w) {\n        var q = [\n            [\"setContext\", \"TL-INT-36111-elmorehotel-ru_2026-06-03\", \"ru\"],\n            [\"embed\", \"search-form\", {\n                    container: \"tl-search-form\"\n            }]\n        ];\n        var h = [\"ru-ibe.tlintegration.ru\", \"ibe.tlintegration.ru\", \"ibe.tlintegration.com\"];\n        var t = w.travelline = (w.travelline || {}),\n            ti = t.integration = (t.integration || {});\n        ti.__cq = ti.__cq? ti.__cq.concat(q) : q;\n            if (!ti.__loader) {\n            ti.__loader = true;\n            var d=w.document,c=d.getElementsByTagName(\"head\")[0]||d.getElementsByTagName(\"body\")[0];\n            function e(s,f) {return function() {w.TL||(c.removeChild(s),f())}}\n            (function l(h) {\n                if (0===h.length) return; var s=d.createElement(\"script\");\n                s.type=\"text/javascript\";s.async=!0;s.src=\"https://\"+h[0]+\"/integration/loader.js\";\n                s.onerror=s.onload=e(s,function(){l(h.slice(1,h.length))});c.appendChild(s)\n            })(h);\n        }\n    })(window);\n</script>\n<!-- end TL head script -->",
+    "bookingScript": "<style>\n#tl-booking-form {\n  width: 100%;\n  max-width: 1110px;\n  margin: 0 auto;\n  z-index: 0;\n}\n</style>\n\n<!-- start TL Booking form script -->\n<div id=\"tl-booking-form\"></div>\n<!-- end TL Booking form script -->\n\n<!-- start TL head script -->\n<script type='text/javascript'>\n    (function(w) {\n        var q = [\n            [\"setContext\", \"TL-INT-36111-elmorehotel-ru_2026-06-03\", \"ru\"],\n            [\"embed\", \"booking-form\", {\n                    container: \"tl-booking-form\"\n            }]\n        ];\n        var h = [\"ru-ibe.tlintegration.ru\", \"ibe.tlintegration.ru\", \"ibe.tlintegration.com\"];\n        var t = w.travelline = (w.travelline || {}),\n            ti = t.integration = (t.integration || {});\n        ti.__cq = ti.__cq? ti.__cq.concat(q) : q;\n            if (!ti.__loader) {\n            ti.__loader = true;\n            var d=w.document,c=d.getElementsByTagName(\"head\")[0]||d.getElementsByTagName(\"body\")[0];\n            function e(s,f) {return function() {w.TL||(c.removeChild(s),f())}}\n            (function l(h) {\n                if (0===h.length) return; var s=d.createElement(\"script\");\n                s.type=\"text/javascript\";s.async=!0;s.src=\"https://\"+h[0]+\"/integration/loader.js\";\n                s.onerror=s.onload=e(s,function(){l(h.slice(1,h.length))});c.appendChild(s)\n            })(h);\n        }\n    })(window);\n</script>\n<!-- end TL head script -->",
     "_help": "Два способа: либо contextId (мы соберём скрипт сами), либо вставьте готовые скрипты от TravelLine в searchScript и bookingScript. Готовые скрипты имеют приоритет."
   },
   "contact": {
@@ -308,7 +320,7 @@
           },
           {
             "label": "Бронирование",
-            "href": "#reserve"
+            "href": "/booking"
           }
         ]
       },

@@ -36,7 +36,7 @@
       <a href="<%= l.href %>"><%= l.label %></a>
     <% }) %>
   </div>
-  <a href="#reserve" class="nav-cta"><%= content.site.navCta %></a>
+  <a href="/booking" class="nav-cta"><%= content.site.navCta %></a>
   <button class="nav-burger" id="navBurger" aria-label="Меню" aria-expanded="false">
     <span></span><span></span><span></span>
   </button>
@@ -52,7 +52,7 @@
       <% }) %>
     </nav>
     <div class="nav-drawer-foot">
-      <a href="#reserve" class="nav-drawer-cta" data-close-drawer><%= content.site.navCta %></a>
+      <a href="/booking" class="nav-drawer-cta" data-close-drawer><%= content.site.navCta %></a>
       <% if (content.contact && content.contact.phone) { %>
         <a class="nav-drawer-phone" href="tel:<%= content.contact.phone.replace(/\s|\+/g,'') %>"><%= content.contact.phone %></a>
       <% } %>
@@ -118,6 +118,12 @@
   </div>
 
   <% content.rooms.items.forEach((r, i) => { %>
+    <%
+      // Идентификатор номера для TravelLine — скрывается из списка, используется в ссылке
+      const idSpec = r.specs.find(sp => (sp.lbl || '').trim() === 'Идентификатор номера');
+      const roomId = idSpec ? idSpec.val : '';
+      const bookHref = roomId ? `/booking?room-type=${roomId}` : '/booking';
+    %>
     <article class="room reveal">
       <div class="room-num"><%= r.num %><br/>—</div>
       <div class="room-content">
@@ -126,10 +132,12 @@
         <p class="room-desc"><%= r.description %></p>
         <div class="room-specs">
           <% r.specs.forEach(sp => { %>
-            <div class="spec"><span class="lbl"><%= sp.lbl %></span><span class="val"><%= sp.val %></span></div>
+            <% if ((sp.lbl || '').trim() !== 'Идентификатор номера') { %>
+              <div class="spec"><span class="lbl"><%= sp.lbl %></span><span class="val"><%= sp.val %></span></div>
+            <% } %>
           <% }) %>
         </div>
-        <a href="#reserve" class="room-cta">
+        <a href="<%= bookHref %>" class="room-cta">
           Забронировать
           <svg viewBox="0 0 14 8" fill="none"><path d="M0 4h13M9 1l4 3-4 3" stroke="currentColor" stroke-width="1"/></svg>
         </a>
@@ -195,7 +203,7 @@
   </div>
   <div class="gallery-foot">
     <span><%= content.gallery.footText %></span>
-    <a href="#reserve"><%= content.gallery.footCta %>
+    <a href="/booking"><%= content.gallery.footCta %>
       <svg width="16" height="9" viewBox="0 0 14 8" fill="none"><path d="M0 4h13M9 1l4 3-4 3" stroke="currentColor" stroke-width="1"/></svg>
     </a>
   </div>
@@ -243,11 +251,10 @@
   </div>
 
   <% if (content.travelline && content.travelline.searchScript) { %>
-    <!-- TravelLine — собственный скрипт от поддержки -->
+    <!-- TravelLine — собственный скрипт от поддержки (содержит свой #tl-search-form внутри) -->
     <div class="tl-wrap reveal reveal-d4">
-      <div id="tl-search-form"></div>
+      <%- content.travelline.searchScript %>
     </div>
-    <%- content.travelline.searchScript %>
   <% } else if (content.travelline && content.travelline.contextId) { %>
     <!-- TravelLine — стандартный скрипт по contextId -->
     <div class="tl-wrap reveal reveal-d4">
