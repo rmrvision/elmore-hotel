@@ -3,14 +3,45 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Бронирование — <%= content.site.brand %></title>
-<meta name="description" content="Бронирование номеров в отеле <%= content.site.brand %>." />
-<% if (content.seo && content.seo.yandexVerification) { %>
-<meta name="yandex-verification" content="<%= content.seo.yandexVerification %>" />
+<%
+  const seo = content.seo || {};
+  const site = (seo.siteUrl || 'https://elmorehotel.ru').replace(/\/$/, '');
+  const pageTitle = seo.bookingTitle || ('Бронирование — ' + content.site.brand);
+  const pageDesc = seo.bookingDescription || ('Бронирование номеров в отеле ' + content.site.brand + '.');
+  const ogImg = seo.ogImage
+    || (content.rooms.items[0] && (content.rooms.items[0].images || [])[0])
+    || content.hero.image || '';
+%>
+<title><%= pageTitle %></title>
+<meta name="description" content="<%= pageDesc %>" />
+<% if (seo.keywords) { %><meta name="keywords" content="<%= seo.keywords %>" /><% } %>
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="<%= site %>/booking" />
+
+<meta property="og:type"        content="website" />
+<meta property="og:site_name"   content="<%= content.site.brand %>" />
+<meta property="og:locale"      content="ru_RU" />
+<meta property="og:title"       content="<%= pageTitle %>" />
+<meta property="og:description" content="<%= pageDesc %>" />
+<meta property="og:url"         content="<%= site %>/booking" />
+<% if (ogImg) { %><meta property="og:image" content="<%= ogImg %>" /><% } %>
+
+<meta name="twitter:card"        content="summary_large_image" />
+<meta name="twitter:title"       content="<%= pageTitle %>" />
+<meta name="twitter:description" content="<%= pageDesc %>" />
+<% if (ogImg) { %><meta name="twitter:image" content="<%= ogImg %>" /><% } %>
+
+<% if (seo.city) { %>
+<meta name="geo.region"    content="<%= seo.country || 'RU' %>-DA" />
+<meta name="geo.placename" content="<%= seo.city %>" />
 <% } %>
-<% if (content.seo && content.seo.googleVerification) { %>
-<meta name="google-site-verification" content="<%= content.seo.googleVerification %>" />
+<% if (seo.geoLat && seo.geoLng) { %>
+<meta name="geo.position"  content="<%= seo.geoLat %>;<%= seo.geoLng %>" />
+<meta name="ICBM"          content="<%= seo.geoLat %>, <%= seo.geoLng %>" />
 <% } %>
+
+<% if (seo.yandexVerification) { %><meta name="yandex-verification" content="<%= seo.yandexVerification %>" /><% } %>
+<% if (seo.googleVerification) { %><meta name="google-site-verification" content="<%= seo.googleVerification %>" /><% } %>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

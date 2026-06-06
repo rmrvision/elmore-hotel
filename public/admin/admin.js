@@ -90,8 +90,8 @@ function render() {
   }
   panel.innerHTML = html;
   bindFields();
-  if (current === 'media')      refreshMedia();
-  if (current === 'travelline') checkSeedUpdates();
+  if (current === 'media') refreshMedia();
+  if (current === 'travelline' || current === 'seo') checkSeedUpdates();
 }
 
 /* ─── проверка обновлений из репозитория для TravelLine ─── */
@@ -124,6 +124,14 @@ async function checkSeedUpdates() {
     });
     if (newIds.length) diffs.push(`Идентификаторы номеров TravelLine (${newIds.length} шт.)`);
 
+    // 3. SEO-поля (только пустые в state → значит TravelLine или мы прислали)
+    const seedSeo = seed.seo || {};
+    const stateSeo = state.seo || {};
+    const SEO_KEYS = ['siteTitle','siteDescription','bookingTitle','bookingDescription',
+                      'keywords','city','region','country','geoLat','geoLng','siteUrl'];
+    const newSeoFields = SEO_KEYS.filter(k => seedSeo[k] && !stateSeo[k]);
+    if (newSeoFields.length) diffs.push(`SEO-поля (${newSeoFields.length} шт.): title, description, регион, геокоординаты`);
+
     if (!diffs.length) return;
 
     banner.style.display = 'block';
@@ -153,6 +161,14 @@ function applySeedToState(seed) {
     if (!seedIdSpec) return;
     const has = (cur.specs || []).some(s => (s.lbl || '').trim() === 'Идентификатор номера');
     if (!has) cur.specs.push({ lbl: 'Идентификатор номера', val: seedIdSpec.val });
+  });
+
+  // SEO-поля (только если в state пусто — не перезатираем ваши правки)
+  const seedSeo = seed.seo || {};
+  state.seo = state.seo || {};
+  ['siteTitle','siteDescription','bookingTitle','bookingDescription','keywords',
+   'ogImage','city','region','country','geoLat','geoLng','siteUrl'].forEach(k => {
+    if (seedSeo[k] && !state.seo[k]) state.seo[k] = seedSeo[k];
   });
 
   setDirty();
@@ -712,19 +728,99 @@ function renderTravelline() {
 }
 
 function renderSeo() {
-  if (!state.seo) state.seo = { yandexVerification: '', yandexMetrikaId: '', googleVerification: '', siteUrl: '' };
+  if (!state.seo) state.seo = {};
+  // безопасные дефолты для всех полей
+  const defaults = {
+    siteTitle: '', siteDescription: '', bookingTitle: '', bookingDescription: '',
+    keywords: '', ogImage: '', city: '', region: '', country: 'RU',
+    geoLat: '', geoLng: '', siteUrl: '',
+    yandexVerification: '', yandexMetrikaId: '', googleVerification: ''
+  };
+  Object.keys(defaults).forEach(k => { if (state.seo[k] == null) state.seo[k] = defaults[k]; });
   const s = state.seo;
   const yv = !!s.yandexVerification, ym = !!s.yandexMetrikaId, gv = !!s.googleVerification;
   return `
     <p class="panel-desc">
-      Подключение Яндекс Вебмастера и Яндекс Метрики. Также можно подтвердить право
-      на сайт в Google Search Console. Все коды вшиваются в <code>&lt;head&gt;</code>
-      обеих страниц (главной и /booking).
+      Тексты для поисковиков, региональный таргетинг, превью при шаринге в соцсетях,
+      подключение Яндекс Вебмастера и Метрики. Всё это вшивается в <code>&lt;head&gt;</code>
+      главной страницы и страницы бронирования.
     </p>
+
+    <div id="tl-import-banner" style="display:none;margin:24px 0;padding:22px 24px;background:linear-gradient(135deg, #2A241D 0%, #3F4730 100%);color:var(--cream);border:1px solid var(--brass);">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--brass-soft);margin-bottom:10px;">— Обнаружены обновления в репозитории</div>
+      <div id="tl-import-summary" style="font-family:var(--serif);font-style:italic;font-size:22px;font-weight:300;line-height:1.3;margin-bottom:14px;color:var(--cream);"></div>
+      <button class="btn primary" id="tl-import-btn" style="background:var(--brass);color:var(--ink);">
+        <span class="dot" style="background:var(--ink);"></span>Применить из репозитория
+      </button>
+    </div>
+
+    <div class="group">
+      <div class="group-head"><div class="group-title"><span class="num">1</span>Метаданные для поисковика — Главная страница</div></div>
+      <div class="group-body">
+        <div class="fields">
+          <div class="field full">
+            <label>Title — заголовок вкладки <span class="lbl-hint">показывается в выдаче, до 60 символов</span></label>
+            <input type="text" data-path="seo.siteTitle" placeholder="Отель El More — официальный сайт, г. Каспийск" value="${esc(s.siteTitle)}">
+          </div>
+          <div class="field full">
+            <label>Description — описание <span class="lbl-hint">показывается под ссылкой в выдаче, до 160 символов</span></label>
+            <textarea data-path="seo.siteDescription" placeholder="Премиальный отель в Каспийске...">${esc(s.siteDescription)}</textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-head"><div class="group-title"><span class="num">2</span>Метаданные для поисковика — Страница /booking</div></div>
+      <div class="group-body">
+        <div class="fields">
+          <div class="field full">
+            <label>Title страницы бронирования</label>
+            <input type="text" data-path="seo.bookingTitle" placeholder="Бронирование — Отель El More, Каспийск" value="${esc(s.bookingTitle)}">
+          </div>
+          <div class="field full">
+            <label>Description страницы бронирования</label>
+            <textarea data-path="seo.bookingDescription">${esc(s.bookingDescription)}</textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-head"><div class="group-title"><span class="num">3</span>Ключевые слова и шаринг</div></div>
+      <div class="group-body">
+        <div class="fields">
+          <div class="field full">
+            <label>Keywords <span class="lbl-hint">через запятую, для Яндекса</span></label>
+            <input type="text" data-path="seo.keywords" placeholder="отель Каспийск, гостиница, El More..." value="${esc(s.keywords)}">
+          </div>
+          <div class="field full">
+            <label>Картинка для шаринга <span class="lbl-hint">появляется при отправке ссылки в VK/Telegram/WhatsApp; 1200×630 px</span></label>
+            <input type="text" data-path="seo.ogImage" placeholder="https://...jpg (если пусто — берётся первое фото номера)" value="${esc(s.ogImage)}">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-head"><div class="group-title"><span class="num">4</span>Региональный таргетинг
+        <span class="lbl-hint" style="font-family:var(--sans);font-size:12px;color:var(--ink-3);text-transform:none;letter-spacing:0;margin-left:14px;">— важно для локального поиска «отель Каспийск»</span>
+      </div></div>
+      <div class="group-body">
+        <div class="fields">
+          <div class="field"><label>Город</label><input type="text" data-path="seo.city" placeholder="Каспийск" value="${esc(s.city)}"></div>
+          <div class="field"><label>Регион</label><input type="text" data-path="seo.region" placeholder="Республика Дагестан" value="${esc(s.region)}"></div>
+          <div class="field"><label>Страна <span class="lbl-hint">код, 2 буквы</span></label><input type="text" data-path="seo.country" placeholder="RU" value="${esc(s.country)}"></div>
+          <div class="field"><label>URL сайта <span class="lbl-hint">для canonical / sitemap</span></label><input type="text" data-path="seo.siteUrl" placeholder="https://elmorehotel.ru" value="${esc(s.siteUrl)}"></div>
+          <div class="field"><label>Широта <span class="lbl-hint">geo.position</span></label><input type="text" data-path="seo.geoLat" placeholder="42.8825" value="${esc(s.geoLat)}"></div>
+          <div class="field"><label>Долгота</label><input type="text" data-path="seo.geoLng" placeholder="47.6427" value="${esc(s.geoLng)}"></div>
+        </div>
+      </div>
+    </div>
 
     <div class="group">
       <div class="group-head">
-        <div class="group-title"><span class="num">▸</span>Яндекс Вебмастер
+        <div class="group-title"><span class="num">5</span>Яндекс Вебмастер
           <span style="font-family:var(--mono);font-size:10px;letter-spacing:0.25em;margin-left:14px;color:${yv ? '#3F7044' : 'var(--brass)'};">
             ${yv ? '● ПОДКЛЮЧЕНО' : '● НЕ ПОДКЛЮЧЕНО'}
           </span>
@@ -734,10 +830,7 @@ function renderSeo() {
         <div class="fields">
           <div class="field full">
             <label>Код верификации <span class="lbl-hint">из meta-тега</span></label>
-            <input type="text" data-path="seo.yandexVerification"
-              placeholder="abc123def456..."
-              value="${esc(s.yandexVerification)}"
-              style="font-family:var(--mono);font-size:14px;letter-spacing:0.05em;">
+            <input type="text" data-path="seo.yandexVerification" placeholder="abc123def456..." value="${esc(s.yandexVerification)}" style="font-family:var(--mono);font-size:14px;letter-spacing:0.05em;">
           </div>
         </div>
         <div style="margin-top:18px;padding:18px 22px;background:var(--bone-2);border:1px solid var(--line);">
@@ -745,9 +838,8 @@ function renderSeo() {
           <ol style="padding-left:22px;line-height:1.8;color:var(--ink-2);font-size:13px;">
             <li>Зайти в <a href="https://webmaster.yandex.ru" target="_blank" style="color:var(--brass);text-decoration:underline;">webmaster.yandex.ru</a> → добавить сайт <code>${esc(s.siteUrl || 'https://elmorehotel.ru')}</code></li>
             <li>Выбрать способ верификации <strong>«Мета-тег»</strong></li>
-            <li>Яндекс покажет строку вида <code style="font-size:11px;">&lt;meta name="yandex-verification" content="<u>abc123</u>"&gt;</code></li>
-            <li>Скопировать значение <code>content="..."</code> (только то, что в кавычках) → вставить выше</li>
-            <li><strong>Сохранить</strong> в админке, дождаться редеплоя, нажать в Вебмастере «Проверить»</li>
+            <li>Скопировать значение из <code>content="..."</code> → вставить в поле выше → Сохранить</li>
+            <li>После редеплоя в Вебмастере нажать <strong>«Проверить»</strong>, затем добавить sitemap: <code>${esc(s.siteUrl || 'https://elmorehotel.ru')}/sitemap.xml</code></li>
           </ol>
         </div>
       </div>
@@ -755,7 +847,7 @@ function renderSeo() {
 
     <div class="group">
       <div class="group-head">
-        <div class="group-title"><span class="num">▸</span>Яндекс Метрика
+        <div class="group-title"><span class="num">6</span>Яндекс Метрика
           <span style="font-family:var(--mono);font-size:10px;letter-spacing:0.25em;margin-left:14px;color:${ym ? '#3F7044' : 'var(--brass)'};">
             ${ym ? '● ПОДКЛЮЧЕНО' : '● НЕ ПОДКЛЮЧЕНО'}
           </span>
@@ -765,28 +857,15 @@ function renderSeo() {
         <div class="fields">
           <div class="field full">
             <label>Номер счётчика <span class="lbl-hint">только цифры</span></label>
-            <input type="text" data-path="seo.yandexMetrikaId"
-              placeholder="12345678"
-              value="${esc(s.yandexMetrikaId)}"
-              style="font-family:var(--mono);font-size:14px;letter-spacing:0.1em;">
+            <input type="text" data-path="seo.yandexMetrikaId" placeholder="12345678" value="${esc(s.yandexMetrikaId)}" style="font-family:var(--mono);font-size:14px;letter-spacing:0.1em;">
           </div>
-        </div>
-        <div style="margin-top:18px;padding:18px 22px;background:var(--bone-2);border:1px solid var(--line);">
-          <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--brass);margin-bottom:10px;">— Как получить</div>
-          <ol style="padding-left:22px;line-height:1.8;color:var(--ink-2);font-size:13px;">
-            <li>Зайти в <a href="https://metrika.yandex.ru" target="_blank" style="color:var(--brass);text-decoration:underline;">metrika.yandex.ru</a> → создать счётчик</li>
-            <li>Адрес сайта: <code>${esc(s.siteUrl || 'https://elmorehotel.ru')}</code></li>
-            <li>Включить опции: <strong>Карта кликов</strong>, <strong>Вебвизор</strong>, <strong>Точный показатель отказов</strong> (мы уже настроили в коде)</li>
-            <li>Скопировать <strong>номер счётчика</strong> (8 цифр) — он в верху страницы счётчика</li>
-            <li>Вставить выше → <strong>Сохранить</strong></li>
-          </ol>
         </div>
       </div>
     </div>
 
     <div class="group">
       <div class="group-head">
-        <div class="group-title"><span class="num">▸</span>Google Search Console
+        <div class="group-title"><span class="num">7</span>Google Search Console
           <span style="font-family:var(--mono);font-size:10px;letter-spacing:0.25em;margin-left:14px;color:${gv ? '#3F7044' : 'var(--ink-3)'};">
             ${gv ? '● ПОДКЛЮЧЕНО' : '○ ОПЦИОНАЛЬНО'}
           </span>
@@ -796,39 +875,29 @@ function renderSeo() {
         <div class="fields">
           <div class="field full">
             <label>Код верификации Google</label>
-            <input type="text" data-path="seo.googleVerification"
-              placeholder="abc123..."
-              value="${esc(s.googleVerification)}"
-              style="font-family:var(--mono);font-size:14px;letter-spacing:0.05em;">
+            <input type="text" data-path="seo.googleVerification" placeholder="abc123..." value="${esc(s.googleVerification)}" style="font-family:var(--mono);font-size:14px;letter-spacing:0.05em;">
           </div>
         </div>
       </div>
     </div>
 
     <div class="group">
-      <div class="group-head"><div class="group-title"><span class="num">▸</span>Базовые SEO-настройки</div></div>
+      <div class="group-head"><div class="group-title"><span class="num">i</span>Автоматические эндпоинты</div></div>
       <div class="group-body">
-        <div class="fields">
-          <div class="field full">
-            <label>URL сайта <span class="lbl-hint">для sitemap.xml</span></label>
-            <input type="text" data-path="seo.siteUrl" placeholder="https://elmorehotel.ru" value="${esc(s.siteUrl)}">
-          </div>
-        </div>
-        <div style="margin-top:18px;padding:18px 22px;background:var(--bone-2);border:1px solid var(--line);">
-          <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--brass);margin-bottom:10px;">— Автоматические эндпоинты</div>
-          <p style="line-height:1.7;color:var(--ink-2);font-size:13px;">
-            Сайт автоматически отдаёт:
-          </p>
-          <ul style="padding-left:22px;line-height:1.9;color:var(--ink-2);font-size:13px;">
-            <li><a href="/robots.txt" target="_blank" style="color:var(--brass);text-decoration:underline;font-family:var(--mono);">/robots.txt</a> — для поисковых роботов</li>
-            <li><a href="/sitemap.xml" target="_blank" style="color:var(--brass);text-decoration:underline;font-family:var(--mono);">/sitemap.xml</a> — карта сайта (главная + /booking)</li>
-          </ul>
-          <p style="margin-top:10px;line-height:1.7;color:var(--ink-2);font-size:13px;">
-            После добавления сайта в Вебмастер укажите там же ссылку на sitemap.xml для ускоренной индексации.
-          </p>
-        </div>
+        <ul style="padding-left:22px;line-height:1.9;color:var(--ink-2);font-size:13px;">
+          <li><a href="/robots.txt" target="_blank" style="color:var(--brass);text-decoration:underline;font-family:var(--mono);">/robots.txt</a> — для поисковых роботов, закрыт <code>/admin</code></li>
+          <li><a href="/sitemap.xml" target="_blank" style="color:var(--brass);text-decoration:underline;font-family:var(--mono);">/sitemap.xml</a> — карта сайта (главная + /booking)</li>
+        </ul>
+        <p style="margin-top:14px;line-height:1.7;color:var(--ink-2);font-size:13px;">
+          Каждая страница сайта автоматически отдаёт корректные <strong>Open Graph</strong>
+          и <strong>Twitter Card</strong> метатеги для красивого превью при шаринге в соцсетях,
+          а также <strong>Schema.org Hotel JSON-LD</strong> с информацией о вашем отеле для
+          богатых сниппетов в выдаче Яндекса и Google.
+        </p>
       </div>
-    </div>`;
+    </div>
+
+  `;
 }
 
 function renderMedia() {

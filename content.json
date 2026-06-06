@@ -23,7 +23,7 @@
     "navCta": "Забронировать"
   },
   "hero": {
-    "metaLeft": "43.2°N · 76.8°E",
+    "metaLeft": "42.9°N · 47.6°E",
     "metaCenter": "Chapter I — Le Sommeil",
     "metaRight": "MMXXVI · No. 07",
     "titleLine1": "El",
@@ -278,11 +278,21 @@
     "buttonLabel": "Отправить запрос"
   },
   "seo": {
+    "siteTitle": "Отель El More — официальный сайт, г. Каспийск",
+    "siteDescription": "Премиальный отель El More в Каспийске. Камерные номера в трёх категориях: эконом, стандарт плюс, люкс семейный. Завтрак до полудня, парковка, Wi-Fi. Бронирование онлайн без предоплаты.",
+    "bookingTitle": "Бронирование номера — Отель El More, Каспийск",
+    "bookingDescription": "Забронируйте номер в отеле El More в Каспийске онлайн. Свободные даты и стоимость — на живом календаре. Подтверждение приходит сразу, без предоплаты.",
+    "keywords": "отель Каспийск, гостиница Каспийск, El More, Эль Море, отдых Каспийск, номера у моря, бронирование Дагестан, отель Дагестан, отдых на Каспии",
+    "ogImage": "",
+    "city": "Каспийск",
+    "region": "Республика Дагестан",
+    "country": "RU",
+    "geoLat": "42.8825",
+    "geoLng": "47.6427",
+    "siteUrl": "https://elmorehotel.ru",
     "yandexVerification": "",
     "yandexMetrikaId": "",
-    "googleVerification": "",
-    "siteUrl": "https://elmorehotel.ru",
-    "_help": "yandexVerification — код из <meta name=yandex-verification ...>. yandexMetrikaId — номер счётчика (только цифры). siteUrl — для sitemap.xml."
+    "googleVerification": ""
   },
   "travelline": {
     "contextId": "",
@@ -293,7 +303,7 @@
   },
   "contact": {
     "addressLabel": "— Адрес",
-    "address": "ул. Тенистая, 14\nАлматы, 050010",
+    "address": "г. Каспийск\nРеспублика Дагестан",
     "addressNote": "Открыто круглосуточно · Парковка во дворе",
     "linkLabel": "— Связь",
     "phone": "+7 700 123 45 67",
@@ -336,7 +346,7 @@
             "href": "mailto:hello@elmorehotel.ru"
           }
         ],
-        "extra": "ул. Тенистая, 14\nАлматы"
+        "extra": "г. Каспийск\nРеспублика Дагестан"
       },
       {
         "title": "— Социальные сети",
