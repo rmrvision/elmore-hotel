@@ -2,7 +2,12 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#161310" />
+<meta name="color-scheme" content="light" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="<%= content.site.brand %>" />
 <%
   const seo = content.seo || {};
   const site = (seo.siteUrl || 'https://elmorehotel.ru').replace(/\/$/, '');
@@ -46,7 +51,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/site.css?v=6" />
+<link rel="stylesheet" href="/assets/site.css?v=7" />
 <style>
   .booking-page{min-height:100vh;background:var(--bone);}
   .booking-hero{
@@ -90,11 +95,18 @@
   }
 
   @media (max-width:760px){
-    .booking-hero{padding:120px 22px 40px;grid-template-columns:1fr;gap:20px;text-align:center;}
+    .booking-hero{
+      padding:120px max(22px, env(safe-area-inset-left)) 40px max(22px, env(safe-area-inset-right));
+      grid-template-columns:1fr;gap:20px;text-align:center;
+    }
     .booking-mark{text-align:center;}
-    .booking-frame{padding:30px 22px 60px;}
+    .booking-frame{
+      padding:30px max(22px, env(safe-area-inset-right)) 60px max(22px, env(safe-area-inset-left));
+    }
   }
   @media (max-width:420px){
+    .booking-hero{padding-top:104px;}
+    .booking-frame{padding-left:max(14px, env(safe-area-inset-left));padding-right:max(14px, env(safe-area-inset-right));}
     #tl-booking-form{padding:5px;}
   }
 </style>
